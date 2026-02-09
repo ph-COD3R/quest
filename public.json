@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "version": "v3-incomplete",
+    "exportedAt": "2026-02-09T22:15:57.036Z"
+  },
+  "profile": {
+    "name": "Jogador",
+    "title": "Aprendiz",
+    "avatar": null,
+    "theme": "rpg-elegante"
+  },
+  "stats": {
+    "booksFinished": 0,
+    "medals": 0,
+    "rankByBooks": "Iniciante"
+  },
+  "books": []
+}
