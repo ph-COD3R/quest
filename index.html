@@ -64,27 +64,6 @@
     .title p{margin:2px 0 0;color:var(--muted);font-size:12px}
 
     .actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
-    .btn{
-      appearance:none;border:1px solid rgba(255,255,255,.14);
-      background:rgba(255,255,255,.06);
-      color:var(--text);
-      border-radius:14px;
-      padding:9px 12px;
-      cursor:pointer;
-      transition:transform .08s ease, background .2s ease, border-color .2s ease;
-      display:inline-flex;align-items:center;gap:8px;
-      font-weight:700;font-size:12px;
-    }
-    .btn:hover{background:rgba(255,255,255,.10)}
-    .btn:active{transform:translateY(1px)}
-    .btn.primary{
-      border-color:rgba(244,184,74,.35);
-      background:linear-gradient(135deg, rgba(244,184,74,.22), rgba(255,213,138,.10));
-    }
-    .btn.good{
-      border-color:rgba(111,231,185,.35);
-      background:linear-gradient(135deg, rgba(111,231,185,.20), rgba(255,255,255,.06));
-    }
 
     .grid{
       display:grid;
@@ -235,6 +214,24 @@
       background:rgba(0,0,0,.12);color:var(--muted);font-size:12px;
     }
 
+    /* ===== Conquistas: trava tamanho + scroll interno ===== */
+    #achCard{display:flex;flex-direction:column}
+    #achList{
+      overflow:auto;
+      padding-right:6px;
+      scrollbar-width:thin;
+      scrollbar-color: rgba(255,255,255,.18) rgba(0,0,0,.10);
+    }
+    #achList::-webkit-scrollbar{width:10px}
+    #achList::-webkit-scrollbar-track{background:rgba(0,0,0,.12);border-radius:999px}
+    #achList::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.14);
+      border-radius:999px;
+      border:2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    #achList::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.20);background-clip: padding-box}
+
     /* Modal (painel mais sólido, menos “fantasma”) */
     .backdrop{
       position:fixed;inset:0;
@@ -314,7 +311,8 @@
           </p>
         </div>
         <div class="chips">
-          <span class="chip warn" id="statusChip">Carregando public.json…</span>
+          <!-- Mostra apenas em erro (quando estiver ok, fica oculto) -->
+          <span class="chip warn" id="statusChip" style="display:none;">Carregando public.json…</span>
         </div>
       </div>
     </div>
@@ -436,9 +434,28 @@
     const $$ = (q, el=document)=> Array.from(el.querySelectorAll(q));
 
     function pct(x){ return Math.round((Number(x)||0)*100); }
-    function clamp(v,a,b){ return Math.max(a, Math.min(b,v)); }
+
+    // ===== Corrige strings “BÃ¡sica” (UTF-8 lido como Latin-1) quando acontecer =====
+    function fixMojibake(s){
+      if(typeof s !== "string") return s;
+      // Heurística bem conservadora: tenta reparar quando aparece o padrão mais comum
+      if(!/[ÃÂ]/.test(s)) return s;
+      try{
+        const bytes = Uint8Array.from([...s].map(ch => ch.charCodeAt(0) & 0xFF));
+        const decoded = new TextDecoder("utf-8", { fatal:false }).decode(bytes);
+        const bad = (s.match(/[ÃÂ]/g)||[]).length;
+        const bad2 = (decoded.match(/[ÃÂ]/g)||[]).length;
+        // melhora se reduz “Ã/Â” ou adiciona acentos pt-BR
+        const accents = (decoded.match(/[áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]/g)||[]).length;
+        if(bad2 < bad || accents > 0) return decoded;
+      }catch(e){}
+      return s;
+    }
+    function txt(s){ return fixMojibake(String(s ?? "")); }
+
     function escapeHtml(s){
-      return String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
+      s = txt(s);
+      return s.replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[c]));
     }
     function minutesToH(min){
       min = Math.max(0, Math.round(Number(min)||0));
@@ -502,9 +519,15 @@
 
     let DATA = null;
 
+    // Status: só aparece em erro; quando estiver ok, fica oculto
     function setStatus(text, kind="warn"){
       const el = $("#statusChip");
       if(!el) return;
+      if(!text){
+        el.style.display = "none";
+        return;
+      }
+      el.style.display = "inline-flex";
       el.textContent = text;
       el.classList.remove("warn","good","bad");
       if(kind==="good") el.classList.add("good");
@@ -518,7 +541,11 @@
         const url = "./public.json?ts=" + Date.now();
         const r = await fetch(url, {cache:"no-store"});
         if(!r.ok) throw new Error("fetch not ok");
-        const j = await r.json();
+
+        // força decode em UTF-8 (resolve a maioria dos casos “BÃ¡sica” por header errado)
+        const buf = await r.arrayBuffer();
+        const text = new TextDecoder("utf-8", { fatal:false }).decode(new Uint8Array(buf));
+        const j = JSON.parse(text);
         return j;
       }catch(e){
         return null;
@@ -527,7 +554,7 @@
 
     function computeTagOptions(books){
       const set = new Set();
-      books.forEach(b=> (b.tags||[]).forEach(t=> set.add(String(t).trim())) );
+      books.forEach(b=> (b.tags||[]).forEach(t=> set.add(txt(String(t).trim()))) );
       const tags = Array.from(set).filter(Boolean).sort((a,b)=>a.localeCompare(b));
       const sel = $("#tagFilter");
       sel.innerHTML = `<option value="">(todas as tags)</option>` + tags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
@@ -540,12 +567,12 @@
       const rb = ranks.byBooks || {};
       const rm = ranks.byMedals || {};
 
-      $("#playerName").textContent = p.name || "Jogador";
-      $("#rankTitle").textContent = p.title || "—";
-      $("#tagline").textContent = (p.tagline||"").trim() ? p.tagline : "—";
-      $("#medalsChip").innerHTML = `🏅 <b>${rm.medals ?? 0}</b>`;
-      $("#rankBooks").textContent = `📚 Rank: ${rb.rank || "—"}`;
-      $("#rankMedals").textContent = `🏵️ Medalhas: ${rm.rank || "—"}`;
+      $("#playerName").textContent = txt(p.name || "Jogador");
+      $("#rankTitle").textContent = txt(p.title || "—");
+      $("#tagline").textContent = txt((p.tagline||"").trim() ? p.tagline : "—");
+      $("#medalsChip").innerHTML = `🏅 <b>${escapeHtml(rm.medals ?? 0)}</b>`;
+      $("#rankBooks").textContent = `📚 Rank: ${txt(rb.rank || "—")}`;
+      $("#rankMedals").textContent = `🏵️ Medalhas: ${txt(rm.rank || "—")}`;
 
       const goal = Number(p.annualGoal||0);
       const fin = Number(st.booksFinished||0);
@@ -588,12 +615,12 @@
       $("#booksLine").textContent = `${rb.finishedBooks ?? 0} finalizados`;
       $("#booksBar").style.width = `${pct(rb.progress ?? 0)}%`;
       $("#booksPct").textContent = `${pct(rb.progress ?? 0)}%`;
-      $("#booksNote").textContent = rb.nextLabel ? `Próximo: ${rb.nextLabel}` : "Max.";
+      $("#booksNote").textContent = rb.nextLabel ? `Próximo: ${txt(rb.nextLabel)}` : "Max.";
 
       $("#medalsLine").textContent = `${rm.medals ?? 0} medalhas`;
       $("#medalsBar").style.width = `${pct(rm.progress ?? 0)}%`;
       $("#medalsPct").textContent = `${pct(rm.progress ?? 0)}%`;
-      $("#medalsNote").textContent = rm.nextLabel ? `Próximo: ${rm.nextLabel}` : "Max.";
+      $("#medalsNote").textContent = rm.nextLabel ? `Próximo: ${txt(rm.nextLabel)}` : "Max.";
     }
 
     // ======= Conquistas: biblioteca interna + merge com public.json =======
@@ -601,7 +628,6 @@
     function buildAutoAchievementLibrary(data){
       const defs = [];
 
-      // Mesmos marcos do app (autoAchievementDefs)
       const bookMilestones = [
         { n:1, name:"Primeiro livro", medals:2 },
         { n:3, name:"Bronze (3 livros)", medals:3 },
@@ -691,7 +717,7 @@
       const tagMap = new Map(); // lower -> display
       (data.books||[]).forEach(b=>{
         (b.tags||[]).forEach(t=>{
-          const raw = String(t||"").trim();
+          const raw = txt(String(t||"").trim());
           const low = raw.toLowerCase();
           if(!raw) return;
           if(!tagMap.has(low)) tagMap.set(low, raw);
@@ -711,7 +737,6 @@
         });
       }
 
-      // Ordena por “famílias” para ficar previsível
       const keyOrder = (id)=>{
         if(id.startsWith("books_")) return 1;
         if(id.startsWith("topics_")) return 2;
@@ -730,18 +755,44 @@
       return defs;
     }
 
+    function syncAchievementPanel(){
+      const pc = $("#profileCard");
+      const ac = $("#achCard");
+      const list = $("#achList");
+      if(!pc || !ac || !list) return;
+
+      // No mobile (1 coluna), deixa altura livre (sem scroll travado)
+      if(window.matchMedia("(max-width: 980px)").matches){
+        ac.style.height = "auto";
+        ac.style.maxHeight = "none";
+        list.style.maxHeight = "none";
+        list.style.overflow = "visible";
+        return;
+      }
+
+      const target = Math.round(pc.getBoundingClientRect().height);
+      ac.style.height = target + "px";
+      ac.style.maxHeight = target + "px";
+
+      const titleEl = ac.querySelector(".sectionTitle");
+      const subEl = ac.querySelector(".sub");
+      const pad = 14*2; // padding do card
+      const headerH = (titleEl ? titleEl.getBoundingClientRect().height : 0) + (subEl ? subEl.getBoundingClientRect().height : 0) + 8;
+
+      const available = target - headerH - pad;
+      list.style.maxHeight = Math.max(160, Math.floor(available)) + "px";
+      list.style.overflow = "auto";
+    }
+
     function renderAchievements(){
       const filter = $("#achFilter").value;
 
       const unlockedArr = (DATA.achievements?.autoUnlocked || []);
       const unlockedMap = new Map(unlockedArr.map(a=>[a.id, a]));
 
-      // Biblioteca interna (todas as conquistas automáticas possíveis)
       const lib = buildAutoAchievementLibrary(DATA);
-
       const rows = [];
 
-      // Auto: biblioteca + merge (garante que "Todas" inclua bloqueadas)
       const libIds = new Set();
       lib.forEach(def=>{
         libIds.add(def.id);
@@ -761,46 +812,44 @@
         });
       });
 
-      // Auto: se vier algo no JSON que não está na biblioteca (compatibilidade)
       unlockedArr.forEach(a=>{
         if(libIds.has(a.id)) return;
         rows.push({
           type:"auto",
           id:a.id,
-          title: a.name || a.id,
-          desc: a.desc || "Conquista (id desconhecido nesta vitrine).",
-          medals: Number(a.medals)||0,
+          title:a.name || a.id,
+          desc:a.desc || "Conquista (id desconhecido nesta vitrine).",
+          medals:Number(a.medals)||0,
           status:"Destravada",
-          when: a.unlockedAt || null,
+          when:a.unlockedAt || null,
           badgeClass:"good",
           unlocked:true
         });
       });
 
-      // Manual
       const manual = (DATA.achievements?.manual || []);
       manual.forEach(m=>{
         const done = !!m.completed;
         rows.push({
           type:"manual",
           id:m.id,
-          title: `🛠️ ${m.title || "Conquista manual"}`,
-          desc: (m.desc||"") + (m.difficulty ? ` • Dificuldade: ${m.difficulty}` : ""),
-          medals: Number(m.medals)||0,
-          status: done ? "Concluída" : "Pendente",
-          when: done ? (m.completedAt || null) : null,
+          title:`🛠️ ${m.title || "Conquista manual"}`,
+          desc:(m.desc||"") + (m.difficulty ? ` • Dificuldade: ${m.difficulty}` : ""),
+          medals:Number(m.medals)||0,
+          status:done ? "Concluída" : "Pendente",
+          when:done ? (m.completedAt || null) : null,
           badgeClass: done ? "good" : "warn",
           unlocked: done
         });
       });
 
-      // Filtro
       let filtered = rows;
       if(filter==="unlocked") filtered = rows.filter(r=>r.unlocked);
       if(filter==="locked") filtered = rows.filter(r=>!r.unlocked);
 
       if(filtered.length===0){
         $("#achList").innerHTML = `<div class="empty">Sem conquistas para mostrar (ainda). Finalize livros, conclua tópicos e registre sessões no QUEST.</div>`;
+        syncAchievementPanel();
         return;
       }
 
@@ -809,7 +858,6 @@
         try{ return new Date(iso).toLocaleDateString("pt-BR"); }catch{ return null; }
       };
 
-      // Ordena: destravadas primeiro por data, depois bloqueadas
       filtered.sort((a,b)=>{
         if(a.unlocked!==b.unlocked) return (b.unlocked?1:0) - (a.unlocked?1:0);
         const ad = a.when || "";
@@ -834,6 +882,8 @@
           </div>
         `;
       }).join("");
+
+      syncAchievementPanel();
     }
 
     function renderSessions(){
@@ -864,9 +914,9 @@
     }
 
     function openBookModal(book){
-      $("#modalTitle").textContent = book.title || "Livro";
+      $("#modalTitle").textContent = txt(book.title || "Livro");
       const metaParts = [];
-      if(book.author) metaParts.push(`por ${book.author}`);
+      if(book.author) metaParts.push(`por ${txt(book.author)}`);
       if(book.finished && book.finishedAt){
         try{
           metaParts.push(`finalizado em ${new Date(book.finishedAt).toLocaleDateString("pt-BR")}`);
@@ -876,8 +926,8 @@
 
       const chips = [];
       chips.push(`<span class="chip">${book.finished ? "✅ Finalizado" : "📖 Em progresso"}</span>`);
-      chips.push(`<span class="chip good">🧩 ${book.progress.topicsDone}/${book.progress.topicsTotal}</span>`);
-      chips.push(`<span class="chip">📚 ${book.progress.chaptersDone}/${book.progress.chaptersTotal} cap.</span>`);
+      chips.push(`<span class="chip good">🧩 ${escapeHtml(book.progress.topicsDone)}/${escapeHtml(book.progress.topicsTotal)}</span>`);
+      chips.push(`<span class="chip">📚 ${escapeHtml(book.progress.chaptersDone)}/${escapeHtml(book.progress.chaptersTotal)} cap.</span>`);
       if(book.stars) chips.push(`<span class="chip gold">${"⭐".repeat(book.stars)}</span>`);
       (book.tags||[]).slice(0,8).forEach(t=> chips.push(`<span class="chip">#${escapeHtml(t)}</span>`));
       $("#modalChips").innerHTML = chips.join("");
@@ -902,7 +952,7 @@
       `);
 
       if(book.finished){
-        const review = (book.review||"").trim();
+        const review = txt((book.review||"").trim());
         parts.push(`<div class="hr"></div>`);
         parts.push(`<b>📝 Review</b>`);
         parts.push(review ? `<div class="review" style="margin-top:8px;">${escapeHtml(review)}</div>` : `<div class="small" style="margin-top:8px;">Sem review.</div>`);
@@ -923,7 +973,7 @@
       let filtered = books.slice();
       if(mode==="progress") filtered = filtered.filter(b=>!b.finished);
       if(mode==="done") filtered = filtered.filter(b=>b.finished);
-      if(tag) filtered = filtered.filter(b=>(b.tags||[]).map(x=>String(x)).includes(tag));
+      if(tag) filtered = filtered.filter(b=>(b.tags||[]).map(x=>txt(String(x))).includes(tag));
 
       $("#collectionCount").textContent = `${filtered.length} livro(s)`;
 
@@ -935,7 +985,7 @@
       $("#bookGrid").innerHTML = filtered.map(b=>{
         const cover = coverStyle(b.cover);
         const tags = (b.tags||[]).slice(0,4).map(t=>`<span class="tag">#${escapeHtml(t)}</span>`).join("");
-        const meta = b.author ? b.author : "—";
+        const meta = b.author ? txt(b.author) : "—";
         const badge = b.finished ? `<span class="badge good">Finalizado</span>` : `<span class="badge warn">${b.progress.percent}%</span>`;
         const stars = b.stars ? `<span class="badge">${"⭐".repeat(b.stars)}</span>` : "";
         const review = b.review ? `<span class="badge">📝 review</span>` : "";
@@ -972,32 +1022,41 @@
       $("#bookFilter").onchange = renderBooks;
       $("#tagFilter").onchange = renderBooks;
       $("#achFilter").onchange = renderAchievements;
+
+      window.addEventListener("resize", ()=> syncAchievementPanel());
     }
 
     function loadData(j){
       DATA = j;
-      // Basic validation
       if(!DATA || !DATA.meta || DATA.meta.schema !== "public.v1"){
         setStatus("public.json inválido (schema).", "bad");
         return;
       }
-      setStatus("public.json carregado ✓", "good");
+
+      // Remove o aviso quando estiver OK
+      setStatus("");
 
       renderProfile();
       computeTagOptions(DATA.books||[]);
       renderBooks();
       renderAchievements();
       renderSessions();
+
+      // Garante que o painel de conquistas fique “travado” após render
+      requestAnimationFrame(()=> syncAchievementPanel());
     }
 
     // init
     bindUI();
     (async ()=>{
+      // opcional: mostrar “carregando...” só enquanto busca
+      setStatus("Carregando public.json…", "warn");
+
       const j = await tryFetchPublic();
-      if(j){ loadData(j); }
-      else{
+      if(j){
+        loadData(j);
+      }else{
         setStatus("public.json não encontrado nesta pasta.", "bad");
-        // mantém o layout, mas evita erros
         DATA = { meta:{schema:"public.v1"}, profile:{}, ranks:{}, stats:{}, achievements:{autoUnlocked:[],manual:[]}, sessions:[], books:[] };
         renderProfile();
         computeTagOptions([]);
