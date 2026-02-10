@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-10T04:50:23.109Z"
+    "exportedAt": "2026-02-10T15:39:59.416Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -38,8 +38,8 @@
     "overallProgressPercent": 67,
     "streakCurrent": 2,
     "streakBest": 2,
-    "totalMinutes": 63,
-    "bestSessionMinutes": 61
+    "totalMinutes": 193,
+    "bestSessionMinutes": 130
   },
   "achievements": {
     "autoUnlocked": [
@@ -68,6 +68,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 130,
+      "note": "Fazendo questões",
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 61,
