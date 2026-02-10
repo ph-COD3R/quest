@@ -2,12 +2,12 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-10T01:36:11.979Z"
+    "exportedAt": "2026-02-10T03:28:13.484Z"
   },
   "profile": {
     "name": "Feitosa_exe",
     "title": "Iniciante",
-    "tagline": "InfortÃºnios podem se transformar em grandes fortunas.",
+    "tagline": "Infortúnios podem se transformar em grandes fortunas.",
     "annualGoal": 0,
     "avatar": {
       "type": "image",
@@ -36,7 +36,7 @@
     "topicsDone": 22,
     "topicsTotal": 33,
     "overallProgressPercent": 67,
-    "streakCurrent": 1,
+    "streakCurrent": 0,
     "streakBest": 1,
     "totalMinutes": 2,
     "bestSessionMinutes": 1
@@ -45,15 +45,15 @@
     "autoUnlocked": [
       {
         "id": "books_1",
-        "name": "ðŸ“š Primeiro livro",
+        "name": "📚 Primeiro livro",
         "desc": "Finalize 1 livro(s).",
         "medals": 2,
         "unlockedAt": "2026-02-09T23:23:35.481Z"
       },
       {
         "id": "topics_1",
-        "name": "âœ… TÃ³picos: 1",
-        "desc": "Conclua 1 tÃ³pico(s).",
+        "name": "✅ Tópicos: 1",
+        "desc": "Conclua 1 tópico(s).",
         "medals": 1,
         "unlockedAt": "2026-02-09T23:21:26.683Z"
       }
@@ -80,7 +80,7 @@
   "books": [
     {
       "id": "5cc7c3afffc7b-19c416c3899",
-      "title": "Eletricidade BÃ¡sica",
+      "title": "Eletricidade Básica",
       "author": "Milton Gussow",
       "createdAt": "2026-02-09T08:02:17.369Z",
       "updatedAt": null,
