@@ -1,406 +1,1106 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>QUEST</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QUEST • Vitrine</title>
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root{
+      --bg0:#070a12;
+      --bg1:#0c1326;
+      --panel:#101a33;
+      --panel2:#0d162c;
 
-<!-- Fonte medieval -->
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+      --card:rgba(17,26,49,.78);
+      --card2:rgba(10,16,34,.72);
 
-<style>
-:root{
-  --bg:#020617;
-  --panel:#0b1220;
-  --panel-2:#0f172a;
-  --border:rgba(255,215,160,.25);
-  --text:#e5e7eb;
-  --muted:#94a3b8;
-  --gold:#facc15;
-}
+      --stroke:rgba(255,255,255,.12);
+      --stroke2:rgba(255,255,255,.18);
 
-*{box-sizing:border-box}
+      --text:#e9edf7;
+      --muted:rgba(233,237,247,.70);
 
-body{
-  margin:0;
-  font-family:Inter,system-ui,sans-serif;
-  background:radial-gradient(circle at top,#020617,#000);
-  color:var(--text);
-}
+      --gold:#ffd58a;
+      --gold2:#f4b84a;
+      --emerald:#6fe7b9;
+      --ruby:#ff6b6b;
+      --sky:#7db3ff;
+      --ink:#0a0f1c;
 
-/* ===== HEADER ===== */
-header{
-  padding:24px 32px;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
+      --shadow: 0 20px 60px rgba(0,0,0,.50);
+      --shadow2: 0 26px 80px rgba(0,0,0,.65);
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+      --radius:18px;
+      --radius2:12px;
 
-.brand span{
-  font-size:28px;
-  filter:drop-shadow(0 0 6px rgba(255,215,160,.4));
-}
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    }
 
-.brand h1{
-  font-family:Cinzel,serif;
-  font-size:28px;
-  letter-spacing:2px;
-  margin:0;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 18% 10%, rgba(255,213,138,.10), transparent 60%),
+        radial-gradient(900px 520px at 84% 18%, rgba(125,179,255,.10), transparent 65%),
+        radial-gradient(900px 520px at 45% 92%, rgba(111,231,185,.08), transparent 65%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      font-family: var(--font);
+      min-height:100vh;
+    }
 
-.subtitle{
-  margin-top:6px;
-  font-size:14px;
-  opacity:.75;
-}
+    .wrap{max-width:1180px;margin:0 auto;padding:22px}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:14px 16px;border:1px solid var(--stroke);border-radius:18px;
+      background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      position:sticky;top:10px;backdrop-filter: blur(10px);
+      z-index:3;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .crest{
+      width:42px;height:42px;border-radius:14px;
+      background:
+        radial-gradient(18px 18px at 28% 30%, rgba(255,255,255,.18), transparent 70%),
+        linear-gradient(135deg, rgba(255,213,138,.75), rgba(125,179,255,.65));
+      border:1px solid rgba(255,255,255,.18);
+      display:grid;place-items:center;
+      box-shadow:0 12px 28px rgba(0,0,0,.35);
+    }
+    .title h1{margin:0;font-size:16px;letter-spacing:.5px}
+    .title p{margin:2px 0 0;color:var(--muted);font-size:12px}
+    .headerRight{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--muted);
+      font-size:12px;
+      user-select:none;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;background:rgba(255,255,255,.25);
+      box-shadow:0 0 0 2px rgba(255,255,255,.08);
+    }
+    .dot.good{background:rgba(111,231,185,.85)}
+    .dot.warn{background:rgba(255,213,138,.85)}
+    .dot.bad{background:rgba(255,107,107,.85)}
 
-/* ===== LAYOUT ===== */
-main{
-  max-width:1300px;
-  margin:auto;
-  padding:24px;
-  display:grid;
-  grid-template-columns:1fr;
-  gap:24px;
-}
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap:14px;
+      margin-top:14px;
+    }
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
 
-@media(min-width:1100px){
-  main{
-    grid-template-columns:1.1fr .9fr;
-  }
-}
+    .card{
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow:var(--shadow);
+      padding:14px;
+      overflow:hidden;
+      position:relative;
+    }
+    .card::before{
+      content:"";
+      position:absolute;inset:-1px;
+      background:
+        radial-gradient(680px 240px at 20% 0%, rgba(255,213,138,.10), transparent 52%),
+        radial-gradient(520px 270px at 92% 10%, rgba(125,179,255,.08), transparent 56%);
+      opacity:.65;pointer-events:none;
+    }
+    .card > *{position:relative; z-index:1;}
 
-.card{
-  background:var(--panel);
-  border:1px solid var(--border);
-  box-shadow:0 0 40px rgba(0,0,0,.6);
-  padding:20px;
-}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .muted{color:var(--muted)}
+    .h2{margin:0 0 8px;font-size:14px;letter-spacing:.2px}
+    .sub{margin:0 0 10px;font-size:12px;color:var(--muted);line-height:1.35}
+    .hr{height:1px;background:rgba(255,255,255,.10);margin:12px 0}
 
-/* ===== ABOUT ===== */
-.about p{
-  line-height:1.6;
-  color:var(--muted);
-}
+    /* About */
+    .about{
+      display:grid;grid-template-columns: 42px 1fr;gap:12px;align-items:flex-start;
+    }
+    .aboutIcon{
+      width:42px;height:42px;border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.20);
+      display:grid;place-items:center;
+      box-shadow:0 12px 28px rgba(0,0,0,.35);
+    }
+    .about ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:12px;line-height:1.45}
+    .about li{margin:4px 0}
 
-/* ===== PROFILE ===== */
-.profile-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-  gap:14px;
-  margin-top:12px;
-}
+    /* Profile */
+    .profileTop{display:flex;gap:12px;align-items:center}
+    .avatar{
+      width:56px;height:56px;border-radius:16px;
+      background:linear-gradient(135deg, rgba(244,184,74,.22), rgba(125,179,255,.12));
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      display:grid;place-items:center;
+      overflow:hidden;
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .nameBlock b{font-size:16px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+    .chip{
+      padding:6px 9px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      font-size:12px;
+      display:inline-flex;align-items:center;gap:6px;
+      font-weight:800;
+      user-select:none;
+    }
+    .chip.gold{border-color:rgba(244,184,74,.35);background:rgba(244,184,74,.12);color:rgba(255,213,138,.95)}
+    .chip.good{border-color:rgba(111,231,185,.35);background:rgba(111,231,185,.10)}
+    .chip.warn{border-color:rgba(255,213,138,.35);background:rgba(255,213,138,.10)}
+    .chip.bad{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.10)}
 
-.stat{
-  background:var(--panel-2);
-  padding:12px;
-  border-radius:6px;
-  font-size:13px;
-}
+    .statGrid{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+      margin-top:10px;
+    }
+    @media (max-width: 700px){ .statGrid{grid-template-columns:repeat(2,1fr)} }
+    .stat{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      border-radius:16px;
+      padding:10px;
+    }
+    .stat .k{font-size:11px;color:var(--muted)}
+    .stat .v{font-size:15px;font-weight:900;margin-top:2px}
 
-.stat b{
-  display:block;
-  font-size:16px;
-  color:#fff;
-}
+    .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);overflow:hidden}
+    .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg, rgba(244,184,74,.85), rgba(125,179,255,.85))}
+    .bar i.good{background:linear-gradient(90deg, rgba(111,231,185,.9), rgba(125,179,255,.75))}
+    .barLabel{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:12px;color:var(--muted)}
 
-/* ===== SELECTS ===== */
-select{
-  background:var(--panel-2);
-  color:var(--text);
-  border:1px solid rgba(255,255,255,.15);
-  padding:6px 10px;
-  border-radius:6px;
-  outline:none;
-}
+    /* Sections */
+    .sectionTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    .sectionTitle .left{display:flex;align-items:center;gap:10px}
+    .sectionTitle .left svg{opacity:.92}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 
-select option{
-  background:#020617;
-}
+    /* Custom dropdown (no branco feio) */
+    .dd{position:relative;display:inline-block}
+    .ddBtn{
+      appearance:none;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:14px;
+      padding:9px 10px;
+      font-weight:900;font-size:12px;
+      cursor:pointer;
+      display:inline-flex;align-items:center;gap:8px;
+      user-select:none;
+      transition:background .18s ease, border-color .18s ease, transform .06s ease;
+    }
+    .ddBtn:hover{background:rgba(255,255,255,.10)}
+    .ddBtn:active{transform:translateY(1px)}
+    .ddBtn .caret{opacity:.7}
+    .ddMenu{
+      position:absolute;right:0;top:calc(100% + 8px);
+      min-width:210px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background:linear-gradient(180deg, rgba(10,15,28,.98), rgba(10,15,28,.94));
+      box-shadow:0 18px 55px rgba(0,0,0,.60);
+      padding:6px;
+      display:none;
+      z-index:5;
+      backdrop-filter: blur(10px);
+    }
+    .dd.open .ddMenu{display:block}
+    .ddItem{
+      width:100%;
+      border:0;
+      background:transparent;
+      color:rgba(233,237,247,.92);
+      border-radius:10px;
+      padding:10px 10px;
+      cursor:pointer;
+      text-align:left;
+      font-weight:850;
+      font-size:12px;
+      display:flex;justify-content:space-between;align-items:center;gap:10px;
+    }
+    .ddItem:hover{background:rgba(255,255,255,.08)}
+    .ddItem[aria-selected="true"]{background:rgba(244,184,74,.14);border:1px solid rgba(244,184,74,.22)}
+    .ddSmall{font-weight:700;color:var(--muted);font-size:11px}
 
-/* ===== ACHIEVEMENTS ===== */
-.achievements{
-  display:grid;
-  gap:10px;
-  margin-top:12px;
-}
+    /* Achievements list */
+    .achList{display:grid;grid-template-columns:1fr;gap:10px;margin-top:10px}
+    .ach{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:16px;
+      padding:12px;
+    }
+    .ach b{font-size:13px}
+    .ach .d{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+    .ach .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center}
+    .badge{
+      padding:6px 8px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      font-size:12px;
+      font-weight:900;
+      user-select:none;
+    }
+    .badge.good{border-color:rgba(111,231,185,.35);background:rgba(111,231,185,.10)}
+    .badge.warn{border-color:rgba(255,213,138,.35);background:rgba(255,213,138,.10)}
+    .badge.bad{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.10)}
+    .tag{
+      font-size:12px;color:var(--muted);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.12);
+      border-radius:999px;
+      padding:6px 8px;
+      user-select:none;
+    }
 
-.achievement{
-  display:flex;
-  justify-content:space-between;
-  gap:12px;
-  background:var(--panel-2);
-  padding:12px;
-  border-radius:6px;
-  opacity:.4;
-}
+    /* Book collection */
+    .bookGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:10px}
+    @media (max-width: 980px){ .bookGrid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width: 620px){ .bookGrid{grid-template-columns:1fr} }
 
-.achievement.unlocked{
-  opacity:1;
-  border:1px solid rgba(250,204,21,.3);
-}
+    .book{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.16);
+      border-radius:18px;
+      overflow:hidden;
+      cursor:pointer;
+      transition: transform .12s ease, border-color .18s ease, background .18s ease;
+    }
+    .book:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.18);background:rgba(0,0,0,.20)}
+    .cover{height:82px;border-bottom:1px solid rgba(255,255,255,.10)}
+    .bookBody{padding:12px}
+    .bookTitle{margin:0;font-weight:950;font-size:13px;line-height:1.25}
+    .bookMeta{margin:4px 0 10px;font-size:12px;color:var(--muted)}
+    .miniRow{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:8px}
+    .tagRow{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .empty{color:var(--muted);font-size:12px;padding:10px;border:1px dashed rgba(255,255,255,.18);border-radius:14px;background:rgba(0,0,0,.12)}
 
-.achievement h4{
-  margin:0 0 4px 0;
-}
+    /* Modal / painel do livro (mais sólido e quadrado) */
+    #backdrop{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.66);
+      backdrop-filter: blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+      z-index:20;
+    }
+    .modal{
+      width:min(860px, 100%);
+      border-radius:12px; /* mais quadrado */
+      border:1px solid rgba(255,255,255,.18);
+      background:linear-gradient(180deg, rgba(10,15,28,.96), rgba(10,15,28,.92));
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+    }
+    .modalHead{
+      padding:14px 16px;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+      border-bottom:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+    }
+    .modalHead .left b{font-size:14px}
+    .modalHead .left div{margin-top:2px;color:var(--muted);font-size:12px}
+    .modalBody{padding:14px 16px}
+    .modalGrid{display:grid;grid-template-columns: 1.1fr .9fr;gap:14px}
+    @media (max-width: 860px){ .modalGrid{grid-template-columns:1fr} }
 
-.badge{
-  color:var(--gold);
-}
+    .panel{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.18);
+      border-radius:12px;
+      padding:12px;
+    }
+    .review{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.14);
+      border-radius:12px;
+      padding:10px;
+      color:rgba(233,237,247,.88);
+      white-space:pre-wrap;
+      font-size:12px;
+      line-height:1.45;
+    }
+    .btnClose{
+      appearance:none;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-weight:900;font-size:12px;
+      cursor:pointer;
+    }
+    .btnClose:hover{background:rgba(255,255,255,.10)}
+    .small{font-size:12px;color:var(--muted);line-height:1.4}
 
-/* ===== BOOKS ===== */
-.books{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:14px;
-  margin-top:12px;
-}
+    footer{margin:18px 0 6px;color:rgba(233,237,247,.55);font-size:12px;text-align:center}
+    a{color:inherit}
 
-.book{
-  background:var(--panel-2);
-  padding:12px;
-  border-radius:6px;
-  cursor:pointer;
-  transition:.2s;
-}
-
-.book:hover{
-  transform:translateY(-2px);
-}
-
-.progress{
-  height:6px;
-  background:#020617;
-  border-radius:4px;
-  overflow:hidden;
-  margin-top:8px;
-}
-
-.progress div{
-  height:100%;
-  background:linear-gradient(90deg,#38bdf8,#22c55e);
-}
-
-/* ===== MODAL ===== */
-.modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  z-index:100;
-}
-
-.modal.show{
-  display:block;
-}
-
-.modal-backdrop{
-  position:absolute;
-  inset:0;
-  background:rgba(0,0,0,.75);
-}
-
-.modal-panel{
-  position:relative;
-  max-width:720px;
-  margin:8vh auto;
-  background:var(--panel);
-  border:2px solid var(--border);
-  box-shadow:0 0 50px rgba(0,0,0,.8);
-  padding:24px;
-}
-
-.close{
-  position:absolute;
-  top:12px;
-  right:12px;
-  background:none;
-  border:none;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
-}
-
-/* ===== FOOTER ===== */
-footer{
-  text-align:center;
-  font-size:12px;
-  opacity:.5;
-  padding:24px;
-}
-</style>
+    /* Accessibility focus */
+    :focus-visible{outline:2px solid rgba(244,184,74,.45);outline-offset:2px;border-radius:12px}
+  </style>
 </head>
-
 <body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="crest" aria-hidden="true" title="QUEST">
+          <!-- Medieval book (simple icon) -->
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M6 4.5c2.6-.7 5.4-.7 8 0v15c-2.6-.7-5.4-.7-8 0V4.5Z" stroke="rgba(10,15,28,.92)" stroke-width="2" />
+            <path d="M14 4.5c2.6-.7 5.4-.7 8 0v15c-2.6-.7-5.4-.7-8 0V4.5Z" stroke="rgba(10,15,28,.92)" stroke-width="2" />
+            <path d="M12 5v15" stroke="rgba(10,15,28,.65)" stroke-width="2" />
+            <path d="M7.5 7.2h4.8M7.5 9.6h4.8" stroke="rgba(10,15,28,.60)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="title">
+          <h1>QUEST</h1>
+          <p>Vitrine medieval do seu progresso e conquistas</p>
+        </div>
+      </div>
 
-<header>
-  <div class="brand">
-    <span>ðŸ“œ</span>
-    <h1>QUEST</h1>
-  </div>
-  <div class="subtitle">Vitrine medieval do seu progresso e conquistas</div>
-</header>
+      <div class="headerRight">
+        <span class="pill" title="Status de carregamento do public.json">
+          <span id="loadDot" class="dot warn"></span>
+          <span id="loadText">Carregando public.json…</span>
+        </span>
+      </div>
+    </header>
 
-<main>
-
-<!-- SOBRE -->
-<section class="card about">
-  <h2>ðŸ“– O que Ã© o QUEST?</h2>
-  <p>
-    QUEST Ã© um RPG de leitura e estudo onde cada livro Ã© uma jornada.
-    VocÃª registra livros, capÃ­tulos e tÃ³picos, acompanha seu progresso,
-    finaliza obras e desbloqueia medalhas e conquistas.
-  </p>
-  <p>
-    Esta vitrine existe para exibir sua coleÃ§Ã£o, progresso e conquistas
-    de forma visual, elegante e permanente.
-  </p>
-</section>
-
-<!-- PERFIL -->
-<section class="card">
-  <h2>ðŸ›¡ï¸ Perfil do Jogador</h2>
-  <div id="profile" class="profile-grid"></div>
-</section>
-
-<!-- CONQUISTAS -->
-<section class="card">
-  <h2>ðŸ† Conquistas</h2>
-  <select id="achievementFilter">
-    <option value="all">Todas</option>
-    <option value="unlocked">Destravadas</option>
-    <option value="locked">Bloqueadas</option>
-  </select>
-  <div id="achievements" class="achievements"></div>
-</section>
-
-<!-- LIVROS -->
-<section class="card">
-  <h2>ðŸ“š ColeÃ§Ã£o</h2>
-  <select id="bookFilter">
-    <option value="all">Todos</option>
-    <option value="progress">Em progresso</option>
-    <option value="done">Finalizados</option>
-  </select>
-  <div id="books" class="books"></div>
-</section>
-
-</main>
-
-<!-- MODAL -->
-<div id="modal" class="modal">
-  <div class="modal-backdrop"></div>
-  <div class="modal-panel">
-    <button class="close" onclick="closeModal()">âœ–</button>
-    <div id="modalContent"></div>
-  </div>
-</div>
-
-<footer>
-  Feito com QUEST â€¢ Vitrine
-</footer>
-
-<script>
-/* ===== CATÃLOGO FIXO DE CONQUISTAS ===== */
-const ACHIEVEMENTS_CATALOG = [
-  {id:'first_book',name:'Primeiro Livro',desc:'Finalize 1 livro',medals:2},
-  {id:'ten_books',name:'Leitor Dedicado',desc:'Finalize 10 livros',medals:5},
-  {id:'topics_100',name:'Mestre dos TÃ³picos',desc:'Conclua 100 tÃ³picos',medals:3}
-];
-
-let DATA=null, MERGED_ACHIEVEMENTS=[];
-
-fetch('./public.json',{cache:'no-store'})
-  .then(r=>r.json())
-  .then(json=>{
-    DATA=json;
-    mergeAchievements();
-    renderProfile();
-    renderAchievements();
-    renderBooks();
-  })
-  .catch(()=>{
-    document.body.innerHTML='<h2 style="padding:40px">public.json nÃ£o encontrado</h2>';
-  });
-
-function mergeAchievements(){
-  const unlocked=DATA.achievements||[];
-  const map={};
-  unlocked.forEach(a=>map[a.id]=a);
-  MERGED_ACHIEVEMENTS=ACHIEVEMENTS_CATALOG.map(a=>({
-    ...a,
-    unlocked:!!map[a.id],
-    date:map[a.id]?.date||null
-  }));
-}
-
-/* ===== RENDER ===== */
-function renderProfile(){
-  const p=document.getElementById('profile');
-  p.innerHTML=`
-    <div class="stat"><b>${DATA.player?.name||'Jogador'}</b>Nome</div>
-    <div class="stat"><b>${DATA.stats?.booksTotal||0}</b>Livros</div>
-    <div class="stat"><b>${DATA.stats?.booksFinished||0}</b>Finalizados</div>
-    <div class="stat"><b>${DATA.stats?.medals||0}</b>Medalhas</div>
-    <div class="stat"><b>${DATA.stats?.streak||0}d</b>Streak</div>
-    <div class="stat"><b>${DATA.stats?.time||'0m'}</b>Tempo</div>
-  `;
-}
-
-function renderAchievements(){
-  const f=document.getElementById('achievementFilter').value;
-  const c=document.getElementById('achievements');
-  c.innerHTML='';
-  MERGED_ACHIEVEMENTS
-    .filter(a=>f==='all'||(f==='unlocked'&&a.unlocked)||(f==='locked'&&!a.unlocked))
-    .forEach(a=>{
-      c.innerHTML+=`
-        <div class="achievement ${a.unlocked?'unlocked':''}">
-          <div>
-            <h4>${a.name}</h4>
-            <div>${a.desc}</div>
+    <div class="grid">
+      <section class="card" id="aboutCard">
+        <div class="row">
+          <div class="sectionTitle">
+            <div class="left">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3h10v4H7V3Z" stroke="rgba(233,237,247,.9)" stroke-width="2"/>
+                <path d="M5 7h14v14H5V7Z" stroke="rgba(233,237,247,.9)" stroke-width="2"/>
+                <path d="M8 11h8M8 15h6" stroke="rgba(233,237,247,.75)" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <div>
+                <p class="h2" style="margin:0">Sobre o QUEST</p>
+                <p class="sub" style="margin:2px 0 0">O que é e para que serve esta vitrine</p>
+              </div>
+            </div>
           </div>
-          <div class="badge">ðŸ… ${a.medals}</div>
         </div>
-      `;
-    });
-}
 
-document.getElementById('achievementFilter').onchange=renderAchievements;
+        <div class="hr"></div>
 
-function renderBooks(){
-  const f=document.getElementById('bookFilter').value;
-  const c=document.getElementById('books');
-  c.innerHTML='';
-  (DATA.books||[])
-    .filter(b=>f==='all'||(f==='progress'&&!b.finished)||(f==='done'&&b.finished))
-    .forEach(b=>{
-      c.innerHTML+=`
-        <div class="book" onclick='openBook(${JSON.stringify(b)})'>
-          <b>${b.title}</b><br>
-          <small>${b.author||''}</small>
-          <div class="progress"><div style="width:${b.progress||0}%"></div></div>
+        <div class="about">
+          <div class="aboutIcon" aria-hidden="true">
+            <span style="font-size:18px">??</span>
+          </div>
+          <div>
+            <div class="small">
+              O <b>QUEST</b> é um <b>RPG de leitura/estudo</b> onde eu registro livros, capítulos e tópicos.
+            </div>
+            <ul>
+              <li>Marco progresso, finalizo livros e acompanho sequência (<i>streak</i>).</li>
+              <li>Ganho <b>medalhas</b> e destravo <b>conquistas</b> (automáticas e manuais).</li>
+              <li>Esta página existe para exibir minha <b>coleção</b>, <b>progresso</b> e <b>conquistas</b> de forma bonita.</li>
+            </ul>
+            <div class="small" style="margin-top:6px">
+              (Dados carregados automaticamente de <b>public.json</b> na mesma pasta deste <b>index.html</b>.)
+            </div>
+          </div>
         </div>
+      </section>
+
+      <section class="card" id="profileCard">
+        <div class="sectionTitle">
+          <div class="left">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 12a4 4 0 1 0-0.001-8.001A4 4 0 0 0 12 12Z" stroke="rgba(233,237,247,.9)" stroke-width="2"/>
+              <path d="M4 21a8 8 0 0 1 16 0" stroke="rgba(233,237,247,.9)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <p class="h2" style="margin:0">Perfil do jogador</p>
+              <p class="sub" style="margin:2px 0 0">Ranks, metas e estatísticas gerais</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="profileTop">
+          <div class="avatar" id="avatarBox" aria-label="Avatar do jogador">??</div>
+          <div class="nameBlock">
+            <b id="playerName">Jogador</b>
+            <div class="muted" style="font-size:12px;margin-top:2px" id="tagline">—</div>
+            <div class="chips">
+              <span class="chip gold" id="rankBooks">?? Rank: —</span>
+              <span class="chip" id="rankMedals">??? Medalhas: —</span>
+              <span class="chip good" id="medalsChip">?? <b>0</b></span>
+              <span class="chip warn" id="goalChip">?? Meta: —</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="statGrid" id="statGrid"></div>
+
+        <div class="hr"></div>
+
+        <div>
+          <div class="row"><b>Rank por livros</b><span class="muted" id="booksLine">—</span></div>
+          <div class="bar" style="margin-top:8px"><i id="booksBar"></i></div>
+          <div class="barLabel"><span class="muted" id="booksNote">—</span><span class="muted" id="booksPct">0%</span></div>
+
+          <div class="hr"></div>
+
+          <div class="row"><b>Rank por medalhas</b><span class="muted" id="medalsLine">—</span></div>
+          <div class="bar" style="margin-top:8px"><i class="good" id="medalsBar"></i></div>
+          <div class="barLabel"><span class="muted" id="medalsNote">—</span><span class="muted" id="medalsPct">0%</span></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top:14px">
+      <div class="sectionTitle">
+        <div class="left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 21h14" stroke="rgba(233,237,247,.9)" stroke-width="2" stroke-linecap="round"/>
+            <path d="M7 21V8l5-5 5 5v13" stroke="rgba(233,237,247,.9)" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M9 13h6" stroke="rgba(233,237,247,.75)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <p class="h2" style="margin:0">Conquistas</p>
+            <p class="sub" style="margin:2px 0 0">Automáticas e manuais — com filtro</p>
+          </div>
+        </div>
+
+        <div class="filters">
+          <div class="dd" id="achDD"></div>
+        </div>
+      </div>
+
+      <div class="achList" id="achList"></div>
+    </section>
+
+    <section class="card" style="margin-top:14px">
+      <div class="sectionTitle">
+        <div class="left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 4.5c2.6-.7 5.4-.7 8 0v15c-2.6-.7-5.4-.7-8 0V4.5Z" stroke="rgba(233,237,247,.9)" stroke-width="2" />
+            <path d="M14 4.5c2.6-.7 5.4-.7 8 0v15c-2.6-.7-5.4-.7-8 0V4.5Z" stroke="rgba(233,237,247,.9)" stroke-width="2" />
+            <path d="M12 5v15" stroke="rgba(233,237,247,.55)" stroke-width="2" />
+          </svg>
+          <div>
+            <p class="h2" style="margin:0">Coleção de livros</p>
+            <p class="sub" style="margin:2px 0 0">Clique em um livro para ver detalhes</p>
+          </div>
+        </div>
+
+        <div class="filters">
+          <span class="pill" id="collectionCount">0 livro(s)</span>
+          <div class="dd" id="bookDD"></div>
+          <div class="dd" id="tagDD"></div>
+        </div>
+      </div>
+
+      <div class="bookGrid" id="bookGrid"></div>
+    </section>
+
+    <section class="card" style="margin-top:14px" id="sessionsCard">
+      <div class="sectionTitle">
+        <div class="left">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 8v5l3 2" stroke="rgba(233,237,247,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 22A10 10 0 1 0 12 2a10 10 0 0 0 0 20Z" stroke="rgba(233,237,247,.9)" stroke-width="2"/>
+          </svg>
+          <div>
+            <p class="h2" style="margin:0">Sessões recentes</p>
+            <p class="sub" style="margin:2px 0 0">Últimas sessões exportadas (se existirem no public.json)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="achList" id="sessionList"></div>
+    </section>
+
+    <footer>Feito com QUEST • Vitrine • Tema medieval leve</footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="backdrop" role="dialog" aria-modal="true" aria-label="Detalhes do livro">
+    <div class="modal">
+      <div class="modalHead">
+        <div class="left">
+          <b id="modalTitle">Livro</b>
+          <div id="modalMeta">—</div>
+          <div class="chips" id="modalChips" style="margin-top:10px"></div>
+        </div>
+        <button class="btnClose" id="btnClose">Fechar</button>
+      </div>
+      <div class="modalBody" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    // ==========
+    // Biblioteca interna de conquistas do jogo (para o filtro "todas" mostrar inclusive bloqueadas)
+    // ? Complete/edite esta lista conforme as conquistas reais do seu jogo.
+    // ==========
+    const ACHIEVEMENT_LIBRARY = [
+      { id: "first_book",  name: "Primeiro livro", desc: "Finalize 1 livro.", medals: 2 },
+      { id: "topics_1",    name: "Tópicos: 1", desc: "Conclua 1 tópico.", medals: 1 },
+      { id: "topics_10",   name: "Tópicos: 10", desc: "Conclua 10 tópicos.", medals: 2 },
+      { id: "streak_7",    name: "Streak: 7", desc: "Mantenha 7 dias de streak.", medals: 2 },
+      { id: "streak_30",   name: "Streak: 30", desc: "Mantenha 30 dias de streak.", medals: 4 },
+      { id: "books_5",     name: "Leitor(a) dedicado(a)", desc: "Finalize 5 livros.", medals: 4 },
+      { id: "books_10",    name: "Biblioteca viva", desc: "Finalize 10 livros.", medals: 6 },
+      { id: "marathon_90", name: "Maratona", desc: "Acumule 90 minutos em um dia.", medals: 3 },
+    ];
+
+    // Helpers
+    const $ = (q, el=document)=> el.querySelector(q);
+    const $$ = (q, el=document)=> Array.from(el.querySelectorAll(q));
+    const escapeHtml = (s)=> String(s ?? "").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+    const clamp = (n, a, b)=> Math.max(a, Math.min(b, n));
+    const pct = (n)=> Math.round(clamp(Number(n)||0, 0, 100));
+    const minutesToH = (m)=>{
+      m = Number(m)||0;
+      if(m < 60) return `${Math.round(m)}m`;
+      const h = Math.floor(m/60);
+      const mm = Math.round(m%60);
+      return `${h}h ${mm}m`;
+    };
+    const fmtDate = (iso)=>{
+      if(!iso) return null;
+      try{ return new Date(iso).toLocaleDateString("pt-BR"); }catch{ return null; }
+    };
+
+    function coverStyle(cover){
+      const c = cover || {};
+      const A = c.a || "rgba(244,184,74,.35)";
+      const B = c.b || "rgba(125,179,255,.25)";
+      const pattern = c.pattern || "aurora";
+      const base = `background-image: linear-gradient(135deg, ${A}, ${B});`;
+      const map = {
+        aurora: `
+          background-image:
+            radial-gradient(160px 100px at 20% 25%, rgba(255,255,255,.18), transparent 60%),
+            radial-gradient(180px 120px at 80% 20%, rgba(255,255,255,.14), transparent 62%),
+            radial-gradient(140px 90px at 70% 85%, rgba(255,255,255,.10), transparent 65%),
+            linear-gradient(135deg, ${A}, ${B});`,
+        runes: `
+          background-image:
+            radial-gradient(120px 80px at 25% 30%, rgba(255,255,255,.16), transparent 65%),
+            repeating-linear-gradient(135deg, rgba(255,255,255,.09) 0 8px, rgba(255,255,255,0) 8px 18px),
+            linear-gradient(135deg, ${A}, ${B});`,
+        rays: `
+          background-image:
+            conic-gradient(from 210deg at 30% 40%, rgba(255,255,255,.18), rgba(255,255,255,0) 25%, rgba(255,255,255,.14) 50%, rgba(255,255,255,0) 70%, rgba(255,255,255,.12)),
+            radial-gradient(140px 90px at 80% 25%, rgba(255,255,255,.16), transparent 62%),
+            linear-gradient(135deg, ${A}, ${B});`,
+      };
+      return (map[pattern] || map.aurora);
+    }
+
+    // Custom dropdown (dark medieval)
+    function createDropdown(el, {label, items, value, onChange, minWidth=210}){
+      // items: [{value, text, hint}]
+      el.innerHTML = `
+        <button class="ddBtn" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span class="ddLabel">${escapeHtml(label)}:</span>
+          <span class="ddValue">${escapeHtml(items.find(i=>i.value===value)?.text ?? "")}</span>
+          <span class="caret">?</span>
+        </button>
+        <div class="ddMenu" role="listbox" style="min-width:${minWidth}px"></div>
       `;
-    });
-}
+      const btn = $(".ddBtn", el);
+      const menu = $(".ddMenu", el);
 
-function openBook(b){
-  document.getElementById('modalContent').innerHTML=`
-    <h2>${b.title}</h2>
-    <p>${b.author||''}</p>
-    <p>Progresso: ${b.progress||0}%</p>
-  `;
-  document.getElementById('modal').classList.add('show');
-}
+      function render(){
+        const cur = value;
+        menu.innerHTML = items.map(it=>{
+          const sel = it.value === cur;
+          return `
+            <button class="ddItem" type="button" role="option" aria-selected="${sel ? "true":"false"}" data-v="${escapeHtml(it.value)}">
+              <span>${escapeHtml(it.text)}</span>
+              ${it.hint ? `<span class="ddSmall">${escapeHtml(it.hint)}</span>` : ``}
+            </button>
+          `;
+        }).join("");
+        $(".ddValue", el).textContent = items.find(i=>i.value===value)?.text ?? "";
+      }
 
-function closeModal(){
-  document.getElementById('modal').classList.remove('show');
-}
-</script>
+      function closeAll(){
+        $$(".dd.open").forEach(d=> d.classList.remove("open"));
+        $$(".ddBtn[aria-expanded='true']").forEach(b=> b.setAttribute("aria-expanded","false"));
+      }
 
+      btn.addEventListener("click", (e)=>{
+        e.stopPropagation();
+        const open = el.classList.contains("open");
+        closeAll();
+        if(!open){
+          el.classList.add("open");
+          btn.setAttribute("aria-expanded","true");
+        }
+      });
+
+      menu.addEventListener("click", (e)=>{
+        const t = e.target.closest(".ddItem");
+        if(!t) return;
+        value = t.dataset.v;
+        render();
+        closeAll();
+        onChange?.(value);
+      });
+
+      document.addEventListener("click", ()=> closeAll());
+      document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeAll(); });
+
+      render();
+      return {
+        get value(){return value;},
+        set value(v){ value=v; render(); },
+        setItems(newItems){
+          items = newItems;
+          if(!items.some(i=>i.value===value)) value = items[0]?.value ?? "";
+          render();
+        }
+      };
+    }
+
+    function setLoadStatus(text, kind="warn"){
+      $("#loadText").textContent = text;
+      const dot = $("#loadDot");
+      dot.classList.remove("good","warn","bad");
+      dot.classList.add(kind);
+    }
+
+    let DATA = null;
+    let ddAch = null, ddBook = null, ddTag = null;
+
+    async function loadPublicJson(){
+      // cache-bust for GitHub Pages
+      const url = `./public.json?ts=${Date.now()}`;
+      const r = await fetch(url, {cache:"no-store"});
+      if(!r.ok) throw new Error("fetch failed");
+      return await r.json();
+    }
+
+    function validateData(j){
+      // Minimal validation, don't break if schema changes
+      if(!j) return false;
+      if(j.meta?.schema && typeof j.meta.schema === "string") return true;
+      // fallback: accept even without meta if structure resembles expected
+      return (Array.isArray(j.books) || j.profile || j.stats);
+    }
+
+    function renderProfile(){
+      const p = DATA.profile || {};
+      const st = DATA.stats || {};
+      const ranks = DATA.ranks || {};
+      const rb = ranks.byBooks || {};
+      const rm = ranks.byMedals || {};
+
+      $("#playerName").textContent = p.name || "Jogador";
+      $("#tagline").textContent = (p.tagline||"").trim() ? p.tagline : "—";
+
+      $("#medalsChip").innerHTML = `?? <b>${rm.medals ?? st.medalsTotal ?? 0}</b>`;
+      $("#rankBooks").textContent = `?? Rank: ${rb.rank || "—"}`;
+      $("#rankMedals").textContent = `??? Medalhas: ${rm.rank || "—"}`;
+
+      const goal = Number(p.annualGoal||0);
+      const fin = Number(st.booksFinished||0);
+      $("#goalChip").textContent = goal>0 ? `?? Meta: ${fin}/${goal}` : "?? Meta: —";
+
+      // Avatar
+      const a = p.avatar || {type:"icon", icon:"book"};
+      const box = $("#avatarBox");
+      box.innerHTML = "";
+      if(a.type==="image" && a.image){
+        const img = document.createElement("img");
+        img.src = a.image;
+        box.appendChild(img);
+      }else{
+        const map = {
+          user:"??", star:"?", book:"??", bolt:"?", flame:"??", crown:"??",
+          sword:"???", shield:"???", gem:"??", scroll:"??", skull:"??"
+        };
+        box.textContent = map[a.icon] || "??";
+      }
+
+      // Stats (inclui maior sessão se existir)
+      const biggestSession = st.biggestSessionMinutes ?? st.longestSessionMinutes ?? null;
+
+      const stats = [
+        ["?? Livros", `${st.booksTotal ?? 0}`],
+        ["? Finalizados", `${st.booksFinished ?? 0}`],
+        ["?? Em progresso", `${st.booksInProgress ?? 0}`],
+        ["?? Tópicos", `${st.topicsDone ?? 0}/${st.topicsTotal ?? 0}`],
+        ["?? Streak", `${st.streakCurrent ?? 0}d (best ${st.streakBest ?? 0})`],
+        ["?? Tempo total", minutesToH(st.totalMinutes ?? 0)],
+      ];
+      if(biggestSession != null){
+        stats.push(["?? Maior sessão", minutesToH(biggestSession)]);
+      }
+      $("#statGrid").innerHTML = stats.map(([k,v])=>`
+        <div class="stat"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>
+      `).join("");
+
+      // Bars
+      $("#booksLine").textContent = `${rb.finishedBooks ?? st.booksFinished ?? 0} finalizados`;
+      $("#booksBar").style.width = `${pct(rb.progress ?? 0)}%`;
+      $("#booksPct").textContent = `${pct(rb.progress ?? 0)}%`;
+      $("#booksNote").textContent = rb.nextLabel ? `Próximo: ${rb.nextLabel}` : "—";
+
+      $("#medalsLine").textContent = `${rm.medals ?? st.medalsTotal ?? 0} medalhas`;
+      $("#medalsBar").style.width = `${pct(rm.progress ?? 0)}%`;
+      $("#medalsPct").textContent = `${pct(rm.progress ?? 0)}%`;
+      $("#medalsNote").textContent = rm.nextLabel ? `Próximo: ${rm.nextLabel}` : "—";
+    }
+
+    function buildAchievementRows(){
+      const unlockedAuto = (DATA.achievements?.autoUnlocked || []).map(a=>({
+        id: a.id ?? null,
+        name: a.name ?? a.id ?? "",
+        desc: a.desc ?? "",
+        medals: a.medals ?? 0,
+        unlockedAt: a.unlockedAt ?? null
+      }));
+
+      const unlockedById = new Map();
+      const unlockedByName = new Map();
+      unlockedAuto.forEach(a=>{
+        if(a.id) unlockedById.set(String(a.id), a);
+        if(a.name) unlockedByName.set(String(a.name).toLowerCase(), a);
+      });
+
+      // Merge: library defines "todas", json marks unlocked
+      const mergedAuto = ACHIEVEMENT_LIBRARY.map(def=>{
+        const hit = (def.id && unlockedById.get(String(def.id))) || unlockedByName.get(String(def.name).toLowerCase());
+        if(hit){
+          return {
+            kind: "auto",
+            id: def.id ?? hit.id ?? null,
+            title: def.name || hit.name || "Conquista",
+            desc: def.desc || hit.desc || "",
+            medals: (hit.medals ?? def.medals ?? 0),
+            status: "Destravada",
+            unlocked: true,
+            when: hit.unlockedAt || null
+          };
+        }
+        return {
+          kind: "auto",
+          id: def.id ?? null,
+          title: def.name || "Conquista",
+          desc: def.desc || "",
+          medals: def.medals ?? 0,
+          status: "Bloqueada",
+          unlocked: false,
+          when: null
+        };
+      });
+
+      // Also include any unlocked achievements that are not in the library (so nothing disappears)
+      const extras = unlockedAuto
+        .filter(a=>{
+          const inLib = ACHIEVEMENT_LIBRARY.some(d=> (d.id && a.id && String(d.id)===String(a.id)) || (d.name && a.name && d.name.toLowerCase()===String(a.name).toLowerCase()));
+          return !inLib;
+        })
+        .map(a=>({
+          kind:"auto",
+          id:a.id ?? null,
+          title:a.name || a.id || "Conquista",
+          desc:a.desc || "",
+          medals:a.medals ?? 0,
+          status:"Destravada",
+          unlocked:true,
+          when:a.unlockedAt || null,
+          extra:true
+        }));
+
+      // Manual achievements (from json)
+      const manual = (DATA.achievements?.manual || []).map(m=>{
+        const done = !!m.completed;
+        return {
+          kind:"manual",
+          id:m.id ?? null,
+          title: m.title ? `??? ${m.title}` : "??? Conquista manual",
+          desc: (m.desc||"") + (m.difficulty ? ` • Dificuldade: ${m.difficulty}` : ""),
+          medals: m.medals ?? 0,
+          status: done ? "Concluída" : "Pendente",
+          unlocked: done,
+          when: m.completedAt || null
+        };
+      });
+
+      return [...mergedAuto, ...extras, ...manual];
+    }
+
+    function renderAchievements(){
+      const filter = ddAch?.value ?? "all";
+      const rows = buildAchievementRows();
+
+      const filtered = rows.filter(r=>{
+        if(filter==="unlocked") return r.unlocked;
+        if(filter==="locked") return !r.unlocked;
+        return true;
+      });
+
+      // Sort: unlocked first (optional), then auto before manual, then name
+      filtered.sort((a,b)=>{
+        if(a.unlocked !== b.unlocked) return a.unlocked ? -1 : 1;
+        if(a.kind !== b.kind) return a.kind === "auto" ? -1 : 1;
+        return String(a.title).localeCompare(String(b.title));
+      });
+
+      if(filtered.length===0){
+        $("#achList").innerHTML = `<div class="empty">Sem conquistas para mostrar com este filtro.</div>`;
+        return;
+      }
+
+      $("#achList").innerHTML = filtered.map(r=>{
+        const when = fmtDate(r.when);
+        const badgeClass = r.unlocked ? "good" : "bad";
+        const medalsChip = `<span class="chip good">?? ${escapeHtml(r.medals)}</span>`;
+        const statusChip = `<span class="badge ${badgeClass}">${escapeHtml(r.status)}</span>`;
+        const extraChip = r.extra ? `<span class="tag">?? extra</span>` : ``;
+        return `
+          <div class="ach">
+            <b>${escapeHtml(r.title)}</b>
+            <div class="d">${escapeHtml(r.desc || "—")}</div>
+            <div class="meta">
+              ${medalsChip}
+              ${statusChip}
+              ${when ? `<span class="tag">?? ${escapeHtml(when)}</span>` : ``}
+              ${extraChip}
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function computeTagOptions(books){
+      const set = new Set();
+      books.forEach(b=> (b.tags||[]).forEach(t=> set.add(String(t).trim())) );
+      return Array.from(set).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+    }
+
+    function openBookModal(book){
+      $("#modalTitle").textContent = book.title || "Livro";
+      $("#modalMeta").textContent = book.author ? `por ${book.author}` : "—";
+
+      const chips = [];
+      chips.push(`<span class="chip">${book.finished ? "? Finalizado" : "?? Em progresso"}</span>`);
+      chips.push(`<span class="chip good">?? ${book.progress?.topicsDone ?? 0}/${book.progress?.topicsTotal ?? 0}</span>`);
+      chips.push(`<span class="chip">?? ${book.progress?.chaptersDone ?? 0}/${book.progress?.chaptersTotal ?? 0} cap.</span>`);
+      if(book.stars) chips.push(`<span class="chip gold">${"?".repeat(book.stars)}</span>`);
+      (book.tags||[]).slice(0,10).forEach(t=> chips.push(`<span class="chip">#${escapeHtml(t)}</span>`));
+      $("#modalChips").innerHTML = chips.join("");
+
+      const percent = pct(book.progress?.percent ?? (book.finished ? 100 : 0));
+
+      const left = [];
+      left.push(`<div class="panel">
+        <b>Progresso</b>
+        <div style="margin-top:10px" class="bar"><i style="width:${percent}%"></i></div>
+        <div class="barLabel"><span class="muted">Total</span><span class="muted">${percent}%</span></div>
+        <div class="small" style="margin-top:10px">
+          ?? Tópicos: <b>${escapeHtml(book.progress?.topicsDone ?? 0)}</b> / ${escapeHtml(book.progress?.topicsTotal ?? 0)}<br/>
+          ?? Capítulos: <b>${escapeHtml(book.progress?.chaptersDone ?? 0)}</b> / ${escapeHtml(book.progress?.chaptersTotal ?? 0)}
+        </div>
+      </div>`);
+
+      const right = [];
+      right.push(`<div class="panel">
+        <b>Detalhes</b>
+        <div class="small" style="margin-top:8px">
+          ${book.finishedAt ? `?? Finalizado em: <b>${escapeHtml(fmtDate(book.finishedAt) || "—")}</b><br/>` : ``}
+          ${book.tags?.length ? `??? Tags: <b>${escapeHtml(book.tags.join(", "))}</b><br/>` : `??? Tags: —<br/>`}
+          ${book.stars ? `? Estrelas: <b>${escapeHtml(book.stars)}</b><br/>` : `? Estrelas: —<br/>`}
+        </div>
+        <div class="hr"></div>
+        <b>Review</b>
+        <div style="margin-top:8px" class="review">${escapeHtml((book.review||"").trim() ? book.review : "Sem review.")}</div>
+      </div>`);
+
+      $("#modalBody").innerHTML = `<div class="modalGrid">${left.join("")}${right.join("")}</div>`;
+      $("#backdrop").style.display = "flex";
+    }
+
+    function renderBooks(){
+      const books = DATA.books || [];
+      const mode = ddBook?.value ?? "all";
+      const tag = ddTag?.value ?? "";
+
+      let filtered = books.slice();
+      if(mode==="progress") filtered = filtered.filter(b=>!b.finished);
+      if(mode==="done") filtered = filtered.filter(b=>b.finished);
+      if(tag) filtered = filtered.filter(b=> (b.tags||[]).map(x=>String(x)).includes(tag));
+
+      $("#collectionCount").textContent = `${filtered.length} livro(s)`;
+
+      if(filtered.length===0){
+        $("#bookGrid").innerHTML = `<div class="empty" style="grid-column:1/-1;">Sem livros para este filtro.</div>`;
+        return;
+      }
+
+      $("#bookGrid").innerHTML = filtered.map(b=>{
+        const cover = coverStyle(b.cover);
+        const tags = (b.tags||[]).slice(0,4).map(t=>`<span class="tag">#${escapeHtml(t)}</span>`).join("");
+        const meta = b.author ? b.author : "—";
+        const percent = pct(b.progress?.percent ?? (b.finished ? 100 : 0));
+        const badge = b.finished ? `<span class="badge good">Finalizado</span>` : `<span class="badge warn">${percent}%</span>`;
+        const stars = b.stars ? `<span class="badge">${"?".repeat(b.stars)}</span>` : "";
+        const review = (b.review||"").trim() ? `<span class="badge">?? review</span>` : "";
+        return `
+          <div class="book" data-book="${escapeHtml(b.id)}" tabindex="0" role="button" aria-label="Abrir livro ${escapeHtml(b.title)}">
+            <div class="cover" style="${cover}"></div>
+            <div class="bookBody">
+              <div class="row">
+                <p class="bookTitle">${escapeHtml(b.title)}</p>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${badge}${stars}${review}</div>
+              </div>
+              <p class="bookMeta">${escapeHtml(meta)}</p>
+              <div class="bar"><i style="width:${percent}%"></i></div>
+              <div class="miniRow">
+                <span>${escapeHtml(b.progress?.topicsDone ?? 0)}/${escapeHtml(b.progress?.topicsTotal ?? 0)} tópicos</span>
+                <span>${escapeHtml(b.progress?.chaptersDone ?? 0)}/${escapeHtml(b.progress?.chaptersTotal ?? 0)} cap.</span>
+              </div>
+              ${tags ? `<div class="tagRow">${tags}</div>` : ``}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      $$(".book", $("#bookGrid")).forEach(el=>{
+        const open = ()=>{
+          const id = el.dataset.book;
+          const b = books.find(x=>String(x.id)===String(id));
+          if(b) openBookModal(b);
+        };
+        el.addEventListener("click", open);
+        el.addEventListener("keydown", (e)=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); }});
+      });
+    }
+
+    function renderSessions(){
+      const list = (DATA.sessions || []).slice(0, 40);
+      const booksById = new Map((DATA.books||[]).map(b=>[String(b.id), b]));
+      if(!list.length){
+        $("#sessionsCard").style.display = "none";
+        return;
+      }
+      $("#sessionsCard").style.display = "block";
+
+      $("#sessionList").innerHTML = list.map(s=>{
+        const b = s.bookId != null ? booksById.get(String(s.bookId)) : null;
+        const name = b ? b.title : (s.bookId ? "Livro removido" : "Sem livro");
+        const d = s.end ? fmtDate(s.end) : null;
+        return `
+          <div class="ach">
+            <b>?? ${escapeHtml(minutesToH(s.minutes))} • ${escapeHtml(name)}</b>
+            <div class="d">${escapeHtml((s.note||"").trim() ? s.note : "—")}</div>
+            <div class="meta">
+              <span class="tag">?? ${escapeHtml(d || "—")}</span>
+              <span class="badge">${escapeHtml(s.bookId ? "Vinculada" : "Livre")}</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function bindUI(){
+      $("#btnClose").onclick = ()=> $("#backdrop").style.display = "none";
+      $("#backdrop").addEventListener("click", (e)=>{ if(e.target.id==="backdrop") $("#backdrop").style.display="none"; });
+      document.addEventListener("keydown", (e)=>{ if(e.key==="Escape") $("#backdrop").style.display="none"; });
+    }
+
+    function setupDropdowns(){
+      ddAch = createDropdown($("#achDD"), {
+        label: "Filtro",
+        items: [
+          {value:"all", text:"Todas (inclui bloqueadas)", hint:"padrão"},
+          {value:"unlocked", text:"Apenas destravadas"},
+          {value:"locked", text:"Apenas bloqueadas"}
+        ],
+        value: "all",
+        onChange: renderAchievements,
+        minWidth: 260
+      });
+
+      ddBook = createDropdown($("#bookDD"), {
+        label: "Livros",
+        items: [
+          {value:"all", text:"Todos"},
+          {value:"progress", text:"Em progresso"},
+          {value:"done", text:"Finalizados"}
+        ],
+        value: "progress",
+        onChange: renderBooks,
+        minWidth: 200
+      });
+
+      ddTag = createDropdown($("#tagDD"), {
+        label: "Tags",
+        items: [{value:"", text:"(todas as tags)"}],
+        value: "",
+        onChange: renderBooks,
+        minWidth: 240
+      });
+    }
+
+    function hydrate(){
+      renderProfile();
+      renderAchievements();
+      renderBooks();
+      renderSessions();
+    }
+
+    // Init
+    bindUI();
+    setupDropdowns();
+
+    (async ()=>{
+      try{
+        setLoadStatus("Carregando public.json…", "warn");
+        const j = await loadPublicJson();
+        if(!validateData(j)) throw new Error("invalid public.json");
+        DATA = j;
+
+        // Update tag dropdown items from books
+        const tags = computeTagOptions(DATA.books || []);
+        ddTag.setItems([{value:"", text:"(todas as tags)"}, ...tags.map(t=>({value:t, text:t}))]);
+
+        // If user has no in-progress books, default to "Todos"
+        const anyProgress = (DATA.books||[]).some(b=>!b.finished);
+        if(!anyProgress) ddBook.value = "all";
+
+        hydrate();
+        setLoadStatus("Dados carregados", "good");
+      }catch(err){
+        console.error(err);
+        setLoadStatus("public.json não encontrado/ inválido", "bad");
+        // Show safe empties
+        $("#achList").innerHTML = `<div class="empty">Não encontrei <b>public.json</b> na mesma pasta deste <b>index.html</b>. Coloque o arquivo ao lado e publique novamente no GitHub Pages.</div>`;
+        $("#bookGrid").innerHTML = `<div class="empty" style="grid-column:1/-1;">Sem dados para exibir.</div>`;
+        $("#sessionList").innerHTML = `<div class="empty">Sem dados para exibir.</div>`;
+        $("#sessionsCard").style.display = "none";
+      }
+    })();
+  </script>
 </body>
 </html>
