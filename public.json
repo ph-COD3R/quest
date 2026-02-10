@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-10T03:28:13.484Z"
+    "exportedAt": "2026-02-10T03:32:11.760Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -30,9 +30,9 @@
     }
   },
   "stats": {
-    "booksTotal": 1,
+    "booksTotal": 2,
     "booksFinished": 0,
-    "booksInProgress": 1,
+    "booksInProgress": 2,
     "topicsDone": 22,
     "topicsTotal": 33,
     "overallProgressPercent": 67,
@@ -78,6 +78,30 @@
   ],
   "challenges": [],
   "books": [
+    {
+      "id": "ba426719f78b2-19c459b1fc1",
+      "title": "A",
+      "author": "",
+      "createdAt": "2026-02-10T03:32:00.065Z",
+      "updatedAt": null,
+      "cover": {
+        "preset": "aurora",
+        "colorA": "rgba(106,168,255,.75)",
+        "colorB": "rgba(180,140,255,.75)"
+      },
+      "progress": {
+        "percent": 0,
+        "topicsDone": 0,
+        "topicsTotal": 0,
+        "chaptersDone": 0,
+        "chaptersTotal": 0
+      },
+      "finished": false,
+      "finishedAt": null,
+      "stars": null,
+      "tags": [],
+      "review": null
+    },
     {
       "id": "5cc7c3afffc7b-19c416c3899",
       "title": "Eletricidade Básica",
