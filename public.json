@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-10T03:33:44.476Z"
+    "exportedAt": "2026-02-10T04:42:52.603Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -24,8 +24,8 @@
     },
     "byMedals": {
       "rank": "Aspirante",
-      "medals": 3,
-      "progress": 0.3,
+      "medals": 6,
+      "progress": 0.6,
       "nextLabel": "10 medalhas"
     }
   },
@@ -36,13 +36,20 @@
     "topicsDone": 22,
     "topicsTotal": 33,
     "overallProgressPercent": 67,
-    "streakCurrent": 0,
-    "streakBest": 1,
-    "totalMinutes": 2,
-    "bestSessionMinutes": 1
+    "streakCurrent": 2,
+    "streakBest": 2,
+    "totalMinutes": 63,
+    "bestSessionMinutes": 61
   },
   "achievements": {
     "autoUnlocked": [
+      {
+        "id": "session_60",
+        "name": "⏱️ Sessão: 1h seguida",
+        "desc": "Registre uma sessão de 60 minutos ou mais.",
+        "medals": 3,
+        "unlockedAt": "2026-02-10T04:42:06.319Z"
+      },
       {
         "id": "books_1",
         "name": "📚 Primeiro livro",
@@ -61,6 +68,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 61,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 1,
