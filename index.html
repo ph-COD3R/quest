@@ -70,6 +70,7 @@
       grid-template-columns: 1.1fr .9fr;
       gap:14px;
       margin-top:14px;
+      align-items:start;
     }
     @media (max-width: 980px){
       .grid{grid-template-columns:1fr}
@@ -214,9 +215,12 @@
       background:rgba(0,0,0,.12);color:var(--muted);font-size:12px;
     }
 
-    /* ===== Conquistas: trava tamanho + scroll interno ===== */
+    /* ===== Conquistas: trava o card e faz o conteúdo rolar DENTRO do quadrado ===== */
     #achCard{display:flex;flex-direction:column}
+    #achCard .sectionTitle, #achCard .sub{flex:0 0 auto}
     #achList{
+      flex:1 1 auto;
+      min-height:0; /* ESSENCIAL para scroll funcionar dentro de flex */
       overflow:auto;
       padding-right:6px;
       scrollbar-width:thin;
@@ -291,7 +295,7 @@
         </div>
         <div class="title">
           <h1>QUEST</h1>
-          <p>Vitrine medieval do seu progresso e conquistas.</p>
+          <p>Biblioteca Medieval</p>
         </div>
       </div>
 
@@ -305,9 +309,8 @@
         <div>
           <h2 class="h2">📜 Sobre o QUEST</h2>
           <p class="sub">
-            O <b>QUEST</b> é um <b>RPG de leitura/estudo</b>: você registra livros, capítulos e tópicos, acompanha progresso,
-            finaliza livros e ganha <b>medalhas</b> e <b>conquistas</b>. Esta vitrine existe para exibir sua coleção,
-            progresso e conquistas de forma bonita — <b>automaticamente</b> a partir do <b>public.json</b> nesta pasta.
+            O <b>QUEST</b> é um <b>RPG de leitura/estudo</b>: serve para registrar livros, capítulos e tópicos, acompanha progresso,
+            finaliza livros e ganha <b>medalhas</b> e <b>conquistas</b> por isso. Esta vitrine foi criada para mostrar minha coleção ao longo do tempo.
           </p>
         </div>
         <div class="chips">
@@ -411,7 +414,7 @@
     </section>
 
     <p class="muted" style="text-align:center; margin:16px 0 6px; font-size:12px;">
-      Feito com QUEST • Vitrine • Tema medieval leve.
+      Feitosa_exe
     </p>
   </div>
 
@@ -438,14 +441,12 @@
     // ===== Corrige strings “BÃ¡sica” (UTF-8 lido como Latin-1) quando acontecer =====
     function fixMojibake(s){
       if(typeof s !== "string") return s;
-      // Heurística bem conservadora: tenta reparar quando aparece o padrão mais comum
       if(!/[ÃÂ]/.test(s)) return s;
       try{
         const bytes = Uint8Array.from([...s].map(ch => ch.charCodeAt(0) & 0xFF));
         const decoded = new TextDecoder("utf-8", { fatal:false }).decode(bytes);
         const bad = (s.match(/[ÃÂ]/g)||[]).length;
         const bad2 = (decoded.match(/[ÃÂ]/g)||[]).length;
-        // melhora se reduz “Ã/Â” ou adiciona acentos pt-BR
         const accents = (decoded.match(/[áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]/g)||[]).length;
         if(bad2 < bad || accents > 0) return decoded;
       }catch(e){}
@@ -465,7 +466,6 @@
       return `${h}h${String(m).padStart(2,"0")}`;
     }
 
-    // Cover styles (same spirit as QUEST)
     function coverStyle(cover){
       const A = cover?.colorA || "rgba(106,168,255,.75)";
       const B = cover?.colorB || "rgba(180,140,255,.75)";
@@ -519,7 +519,6 @@
 
     let DATA = null;
 
-    // Status: só aparece em erro; quando estiver ok, fica oculto
     function setStatus(text, kind="warn"){
       const el = $("#statusChip");
       if(!el) return;
@@ -537,16 +536,12 @@
 
     async function tryFetchPublic(){
       try{
-        // cache bust to force refresh on GitHub Pages
         const url = "./public.json?ts=" + Date.now();
         const r = await fetch(url, {cache:"no-store"});
         if(!r.ok) throw new Error("fetch not ok");
-
-        // força decode em UTF-8 (resolve a maioria dos casos “BÃ¡sica” por header errado)
         const buf = await r.arrayBuffer();
         const text = new TextDecoder("utf-8", { fatal:false }).decode(new Uint8Array(buf));
-        const j = JSON.parse(text);
-        return j;
+        return JSON.parse(text);
       }catch(e){
         return null;
       }
@@ -558,6 +553,35 @@
       const tags = Array.from(set).filter(Boolean).sort((a,b)=>a.localeCompare(b));
       const sel = $("#tagFilter");
       sel.innerHTML = `<option value="">(todas as tags)</option>` + tags.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
+    }
+
+    // ========= FIX PRINCIPAL: trava altura do card de conquistas igual ao card de perfil =========
+    let _syncRaf = 0;
+    function syncAchievementPanel(){
+      cancelAnimationFrame(_syncRaf);
+      _syncRaf = requestAnimationFrame(()=>{
+        const pc = $("#profileCard");
+        const ac = $("#achCard");
+        if(!pc || !ac) return;
+
+        if(window.matchMedia("(max-width: 980px)").matches){
+          ac.style.height = "auto";
+          ac.style.maxHeight = "none";
+          return;
+        }
+
+        const target = Math.round(pc.getBoundingClientRect().height);
+        ac.style.height = target + "px";
+        ac.style.maxHeight = target + "px";
+      });
+    }
+
+    let _ro = null;
+    function setupAchievementObserver(){
+      const pc = $("#profileCard");
+      if(!pc || _ro) return;
+      _ro = new ResizeObserver(()=> syncAchievementPanel());
+      _ro.observe(pc);
     }
 
     function renderProfile(){
@@ -578,16 +602,15 @@
       const fin = Number(st.booksFinished||0);
       $("#goalChip").textContent = goal>0 ? `🎯 Meta: ${fin}/${goal}` : "🎯 Meta: —";
 
-      // Avatar
       const a = p.avatar || {type:"icon", icon:"user"};
       const box = $("#avatarBox");
       box.innerHTML = "";
       if(a.type==="image" && a.image){
         const img = document.createElement("img");
         img.src = a.image;
+        img.onload = ()=> syncAchievementPanel();
         box.appendChild(img);
       }else{
-        // lightweight icon set (emoji)
         const map = {
           user:"👤", star:"⭐", book:"📘", bolt:"⚡", flame:"🔥", crown:"👑",
           sword:"🗡️", shield:"🛡️", gem:"💎", scroll:"📜", skull:"💀"
@@ -595,7 +618,6 @@
         box.textContent = map[a.icon] || "👤";
       }
 
-      // Stats (inclui maior sessão se existir)
       const stats = [
         ["📚 Livros", `${st.booksTotal ?? 0}`],
         ["✅ Finalizados", `${st.booksFinished ?? 0}`],
@@ -611,7 +633,6 @@
         <div class="stat"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>
       `).join("");
 
-      // Bars
       $("#booksLine").textContent = `${rb.finishedBooks ?? 0} finalizados`;
       $("#booksBar").style.width = `${pct(rb.progress ?? 0)}%`;
       $("#booksPct").textContent = `${pct(rb.progress ?? 0)}%`;
@@ -621,10 +642,11 @@
       $("#medalsBar").style.width = `${pct(rm.progress ?? 0)}%`;
       $("#medalsPct").textContent = `${pct(rm.progress ?? 0)}%`;
       $("#medalsNote").textContent = rm.nextLabel ? `Próximo: ${txt(rm.nextLabel)}` : "Max.";
+
+      syncAchievementPanel();
     }
 
     // ======= Conquistas: biblioteca interna + merge com public.json =======
-
     function buildAutoAchievementLibrary(data){
       const defs = [];
 
@@ -638,48 +660,23 @@
         { n:100, name:"Lendário (100 livros)", medals:35 },
       ];
       bookMilestones.forEach(m=>{
-        defs.push({
-          id:`books_${m.n}`,
-          name:`📚 ${m.name}`,
-          desc:`Finalize ${m.n} livro(s).`,
-          medals:m.medals,
-          kind:"auto"
-        });
+        defs.push({ id:`books_${m.n}`, name:`📚 ${m.name}`, desc:`Finalize ${m.n} livro(s).`, medals:m.medals, kind:"auto" });
       });
 
       const topicMilestones = [
-        { n:1, medals:1 },
-        { n:50, medals:3 },
-        { n:100, medals:5 },
-        { n:250, medals:8 },
-        { n:500, medals:12 },
-        { n:1000, medals:20 }
+        { n:1, medals:1 }, { n:50, medals:3 }, { n:100, medals:5 },
+        { n:250, medals:8 }, { n:500, medals:12 }, { n:1000, medals:20 }
       ];
       topicMilestones.forEach(m=>{
-        defs.push({
-          id:`topics_${m.n}`,
-          name:`✅ Tópicos: ${m.n}`,
-          desc:`Conclua ${m.n} tópico(s).`,
-          medals:m.medals,
-          kind:"auto"
-        });
+        defs.push({ id:`topics_${m.n}`, name:`✅ Tópicos: ${m.n}`, desc:`Conclua ${m.n} tópico(s).`, medals:m.medals, kind:"auto" });
       });
 
       const streakMilestones = [
-        { n:3, medals:3 },
-        { n:7, medals:5 },
-        { n:14, medals:8 },
-        { n:30, medals:12 },
-        { n:60, medals:20 }
+        { n:3, medals:3 }, { n:7, medals:5 }, { n:14, medals:8 },
+        { n:30, medals:12 }, { n:60, medals:20 }
       ];
       streakMilestones.forEach(m=>{
-        defs.push({
-          id:`streak_${m.n}`,
-          name:`🔥 Streak: ${m.n} dias`,
-          desc:`Estude por ${m.n} dias seguidos (qualquer atividade).`,
-          medals:m.medals,
-          kind:"auto"
-        });
+        defs.push({ id:`streak_${m.n}`, name:`🔥 Streak: ${m.n} dias`, desc:`Estude por ${m.n} dias seguidos (qualquer atividade).`, medals:m.medals, kind:"auto" });
       });
 
       const sessionMilestones = [
@@ -689,13 +686,7 @@
         { n:360, name:"6h seguida", medals:18 },
       ];
       sessionMilestones.forEach(m=>{
-        defs.push({
-          id:`session_${m.n}`,
-          name:`⏱️ Sessão: ${m.name}`,
-          desc:`Registre uma sessão de ${m.n} minutos ou mais.`,
-          medals:m.medals,
-          kind:"auto"
-        });
+        defs.push({ id:`session_${m.n}`, name:`⏱️ Sessão: ${m.name}`, desc:`Registre uma sessão de ${m.n} minutos ou mais.`, medals:m.medals, kind:"auto" });
       });
 
       const totalMilestones = [
@@ -704,17 +695,10 @@
         { n:6000, name:"100h total", medals:28 },
       ];
       totalMilestones.forEach(m=>{
-        defs.push({
-          id:`time_${m.n}`,
-          name:`🧠 ${m.name}`,
-          desc:`Some ${m.n} minutos de estudo registrados.`,
-          medals:m.medals,
-          kind:"auto"
-        });
+        defs.push({ id:`time_${m.n}`, name:`🧠 ${m.name}`, desc:`Some ${m.n} minutos de estudo registrados.`, medals:m.medals, kind:"auto" });
       });
 
-      // Tags: cria possíveis conquistas para as tags que aparecem no seu public.json
-      const tagMap = new Map(); // lower -> display
+      const tagMap = new Map();
       (data.books||[]).forEach(b=>{
         (b.tags||[]).forEach(t=>{
           const raw = txt(String(t||"").trim());
@@ -755,35 +739,6 @@
       return defs;
     }
 
-    function syncAchievementPanel(){
-      const pc = $("#profileCard");
-      const ac = $("#achCard");
-      const list = $("#achList");
-      if(!pc || !ac || !list) return;
-
-      // No mobile (1 coluna), deixa altura livre (sem scroll travado)
-      if(window.matchMedia("(max-width: 980px)").matches){
-        ac.style.height = "auto";
-        ac.style.maxHeight = "none";
-        list.style.maxHeight = "none";
-        list.style.overflow = "visible";
-        return;
-      }
-
-      const target = Math.round(pc.getBoundingClientRect().height);
-      ac.style.height = target + "px";
-      ac.style.maxHeight = target + "px";
-
-      const titleEl = ac.querySelector(".sectionTitle");
-      const subEl = ac.querySelector(".sub");
-      const pad = 14*2; // padding do card
-      const headerH = (titleEl ? titleEl.getBoundingClientRect().height : 0) + (subEl ? subEl.getBoundingClientRect().height : 0) + 8;
-
-      const available = target - headerH - pad;
-      list.style.maxHeight = Math.max(160, Math.floor(available)) + "px";
-      list.style.overflow = "auto";
-    }
-
     function renderAchievements(){
       const filter = $("#achFilter").value;
 
@@ -802,13 +757,13 @@
         rows.push({
           type:"auto",
           id:def.id,
-          title: def.name,
-          desc: def.desc,
+          title:def.name,
+          desc:def.desc,
           medals,
-          status: isUnlocked ? "Destravada" : "Bloqueada",
-          when: isUnlocked ? (got.unlockedAt || null) : null,
-          badgeClass: isUnlocked ? "good" : "warn",
-          unlocked: isUnlocked
+          status:isUnlocked ? "Destravada" : "Bloqueada",
+          when:isUnlocked ? (got.unlockedAt || null) : null,
+          badgeClass:isUnlocked ? "good" : "warn",
+          unlocked:isUnlocked
         });
       });
 
@@ -918,9 +873,7 @@
       const metaParts = [];
       if(book.author) metaParts.push(`por ${txt(book.author)}`);
       if(book.finished && book.finishedAt){
-        try{
-          metaParts.push(`finalizado em ${new Date(book.finishedAt).toLocaleDateString("pt-BR")}`);
-        }catch{}
+        try{ metaParts.push(`finalizado em ${new Date(book.finishedAt).toLocaleDateString("pt-BR")}`); }catch{}
       }
       $("#modalMeta").textContent = metaParts.length ? metaParts.join(" • ") : "—";
 
@@ -1024,6 +977,7 @@
       $("#achFilter").onchange = renderAchievements;
 
       window.addEventListener("resize", ()=> syncAchievementPanel());
+      window.addEventListener("load", ()=> syncAchievementPanel());
     }
 
     function loadData(j){
@@ -1033,7 +987,6 @@
         return;
       }
 
-      // Remove o aviso quando estiver OK
       setStatus("");
 
       renderProfile();
@@ -1042,14 +995,12 @@
       renderAchievements();
       renderSessions();
 
-      // Garante que o painel de conquistas fique “travado” após render
-      requestAnimationFrame(()=> syncAchievementPanel());
+      setupAchievementObserver();
+      syncAchievementPanel();
     }
 
-    // init
     bindUI();
     (async ()=>{
-      // opcional: mostrar “carregando...” só enquanto busca
       setStatus("Carregando public.json…", "warn");
 
       const j = await tryFetchPublic();
@@ -1063,6 +1014,8 @@
         renderBooks();
         renderAchievements();
         renderSessions();
+        setupAchievementObserver();
+        syncAchievementPanel();
       }
     })();
   </script>
