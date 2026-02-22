@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-22T01:04:56.017Z"
+    "exportedAt": "2026-02-22T05:17:41.405Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -23,10 +23,10 @@
       "nextLabel": "1 livro"
     },
     "byMedals": {
-      "rank": "Aspirante",
-      "medals": 6,
-      "progress": 0.6,
-      "nextLabel": "10 medalhas"
+      "rank": "Caçador",
+      "medals": 14,
+      "progress": 0.26666666666666666,
+      "nextLabel": "25 medalhas"
     }
   },
   "stats": {
@@ -36,13 +36,20 @@
     "topicsDone": 22,
     "topicsTotal": 33,
     "overallProgressPercent": 67,
-    "streakCurrent": 0,
+    "streakCurrent": 1,
     "streakBest": 2,
-    "totalMinutes": 255,
-    "bestSessionMinutes": 130
+    "totalMinutes": 458,
+    "bestSessionMinutes": 203
   },
   "achievements": {
     "autoUnlocked": [
+      {
+        "id": "session_180",
+        "name": "⏱️ Sessão: 3h seguida",
+        "desc": "Registre uma sessão de 180 minutos ou mais.",
+        "medals": 8,
+        "unlockedAt": "2026-02-22T05:17:34.946Z"
+      },
       {
         "id": "session_60",
         "name": "⏱️ Sessão: 1h seguida",
@@ -68,6 +75,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 203,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 62,
