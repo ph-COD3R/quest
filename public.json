@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-12T05:20:58.940Z"
+    "exportedAt": "2026-02-22T01:04:56.017Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -36,7 +36,7 @@
     "topicsDone": 22,
     "topicsTotal": 33,
     "overallProgressPercent": 67,
-    "streakCurrent": 1,
+    "streakCurrent": 0,
     "streakBest": 2,
     "totalMinutes": 255,
     "bestSessionMinutes": 130
