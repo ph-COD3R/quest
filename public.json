@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-22T20:39:41.072Z"
+    "exportedAt": "2026-02-22T20:56:07.716Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -39,7 +39,9 @@
     "streakCurrent": 1,
     "streakBest": 2,
     "totalMinutes": 466,
-    "bestSessionMinutes": 203
+    "bestSessionMinutes": 203,
+    "questionsPracticeMinutes": 0,
+    "bestQuestionsPracticeSessionMinutes": 0
   },
   "achievements": {
     "autoUnlocked": [
@@ -151,5 +153,6 @@
       "tags": [],
       "review": null
     }
-  ]
+  ],
+  "questionSessions": []
 }
