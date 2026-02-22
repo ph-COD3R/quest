@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-22T18:09:10.056Z"
+    "exportedAt": "2026-02-22T20:39:41.072Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -38,7 +38,7 @@
     "overallProgressPercent": 87,
     "streakCurrent": 1,
     "streakBest": 2,
-    "totalMinutes": 458,
+    "totalMinutes": 466,
     "bestSessionMinutes": 203
   },
   "achievements": {
@@ -75,6 +75,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 8,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 203,
