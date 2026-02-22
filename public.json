@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-22T20:56:07.716Z"
+    "exportedAt": "2026-02-22T23:38:38.216Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -34,14 +34,14 @@
     "booksFinished": 0,
     "booksInProgress": 1,
     "topicsDone": 33,
-    "topicsTotal": 38,
-    "overallProgressPercent": 87,
+    "topicsTotal": 42,
+    "overallProgressPercent": 79,
     "streakCurrent": 1,
     "streakBest": 2,
     "totalMinutes": 466,
     "bestSessionMinutes": 203,
-    "questionsPracticeMinutes": 0,
-    "bestQuestionsPracticeSessionMinutes": 0
+    "questionsPracticeMinutes": 3,
+    "bestQuestionsPracticeSessionMinutes": 1
   },
   "achievements": {
     "autoUnlocked": [
@@ -141,9 +141,9 @@
         "colorB": "rgba(29, 173, 30, 0.6)"
       },
       "progress": {
-        "percent": 87,
+        "percent": 79,
         "topicsDone": 33,
-        "topicsTotal": 38,
+        "topicsTotal": 42,
         "chaptersDone": 5,
         "chaptersTotal": 19
       },
@@ -154,5 +154,24 @@
       "review": null
     }
   ],
-  "questionSessions": []
+  "questionSessions": [
+    {
+      "minutes": 1,
+      "note": "Questões — filtros",
+      "start": "2026-02-22T23:15:14.588Z",
+      "end": "2026-02-22T23:15:17.048Z"
+    },
+    {
+      "minutes": 1,
+      "note": "Questões — filtros",
+      "start": "2026-02-22T22:59:29.009Z",
+      "end": "2026-02-22T22:59:30.221Z"
+    },
+    {
+      "minutes": 1,
+      "note": "Questões — filtros",
+      "start": "2026-02-22T20:57:15.539Z",
+      "end": "2026-02-22T20:57:16.905Z"
+    }
+  ]
 }
