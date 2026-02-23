@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T21:07:12.549Z"
+    "exportedAt": "2026-02-23T21:11:37.937Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -143,11 +143,11 @@
       "createdAt": "2026-02-09T08:02:17.369Z",
       "updatedAt": null,
       "cover": {
-        "preset": "stripes",
-        "colorA": "rgba(4, 87, 125, 0)",
-        "colorB": "rgba(4, 87, 125, 0)",
-        "emblem": "tome",
-        "emblemColor": "rgba(0, 143, 199, 0.6)"
+        "preset": "rpg_crypt",
+        "colorA": "rgba(255, 24, 0, 0.7)",
+        "colorB": "rgba(255, 24, 0, 0.7)",
+        "emblem": "potion",
+        "emblemColor": "rgba(0, 162, 84, 0.7)"
       },
       "progress": {
         "percent": 90,
