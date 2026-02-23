@@ -580,13 +580,23 @@
     // ===== Corrige strings “BÃ¡sica” (UTF-8 lido como Latin-1) quando acontecer =====
     function fixMojibake(s){
       if(typeof s !== "string") return s;
-      if(!/[ÃÂ]/.test(s)) return s;
+
+      // Só tenta “des-mojibake” quando há forte indício de UTF-8 lido como Latin-1.
+      // IMPORTANT: NÃO deve disparar só por conter "Â" (ex.: "INDUTÂNCIA" é válido em pt-BR).
+      const hasUtf8AsLatin1 = s.includes("Ã") || s.includes("Â ") || s.includes("Â\u00A0");
+      if(!hasUtf8AsLatin1) return s;
+
       try{
         const bytes = Uint8Array.from([...s].map(ch => ch.charCodeAt(0) & 0xFF));
         const decoded = new TextDecoder("utf-8", { fatal:false }).decode(bytes);
+
+        // Se introduziu "�" (replacement), aborta: isso é sinal de que era texto válido.
+        if(decoded.includes("\uFFFD")) return s;
+
         const bad = (s.match(/[ÃÂ]/g)||[]).length;
         const bad2 = (decoded.match(/[ÃÂ]/g)||[]).length;
         const accents = (decoded.match(/[áàâãéêíóôõúçÁÀÂÃÉÊÍÓÔÕÚÇ]/g)||[]).length;
+
         if(bad2 < bad || accents > 0) return decoded;
       }catch(e){}
       return s;
