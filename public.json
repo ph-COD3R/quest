@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T04:55:49.293Z"
+    "exportedAt": "2026-02-23T05:03:31.097Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -161,7 +161,8 @@
       "review": null,
       "bookStats": {
         "readingMinTotal": 551,
-        "lastActivityAt": "2026-02-23T04:44:56.852Z",
+        "questionsMinTotal": 2,
+        "lastActivityAt": "2026-02-23T05:02:55.025Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -303,13 +304,63 @@
   ],
   "questionStats": {
     "total": 42,
-    "attempted": 7,
-    "correct": 20,
-    "wrong": 3,
-    "accuracy": 0.8695652173913043,
+    "attempted": 10,
+    "correct": 23,
+    "wrong": 5,
+    "accuracy": 0.8214285714285714,
     "timeMinTotal": 3
   },
   "recentQuestions": [
+    {
+      "at": "2026-02-23T05:02:55.025Z",
+      "subject": "Eletricidade",
+      "topic": "Associação de pilhas",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 20,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Em pilhas idênticas em paralelo, o que muda (V e corrente)?"
+    },
+    {
+      "at": "2026-02-23T05:02:34.633Z",
+      "subject": "Eletricidade",
+      "topic": "Hidrômetro",
+      "difficulty": "Normal",
+      "result": "wrong",
+      "durationSec": 8,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Como interpretar rapidamente o hidrômetro (peso específico) numa bateria chumbo-ácido (va…"
+    },
+    {
+      "at": "2026-02-23T05:00:58.171Z",
+      "subject": "Eletricidade",
+      "topic": "Série-paralelo",
+      "difficulty": "Normal",
+      "result": "ok",
+      "durationSec": 12,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Como usar pilhas para dobrar corrente ou para dobrar a tensão?"
+    },
+    {
+      "at": "2026-02-23T04:58:02.185Z",
+      "subject": "Eletricidade",
+      "topic": "Recarga",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 21,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Ao recarregar uma pilha/bateria, a conexão correta é:"
+    },
+    {
+      "at": "2026-02-23T04:57:40.439Z",
+      "subject": "Eletricidade",
+      "topic": "Associação de pilhas",
+      "difficulty": "Fácil",
+      "result": "wrong",
+      "durationSec": 27,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Em pilhas idênticas em paralelo, o que muda (V e corrente)?"
+    },
     {
       "at": "2026-02-23T04:44:56.852Z",
       "subject": "Eletricidade",
@@ -343,12 +394,27 @@
   ],
   "questionThemes30d": [
     {
+      "topic": "Associação de pilhas",
+      "count": 2,
+      "accuracy": 0.5
+    },
+    {
+      "topic": "Recarga",
+      "count": 2,
+      "accuracy": 1
+    },
+    {
       "topic": "Circuito Paralelo CC",
       "count": 2,
       "accuracy": 1
     },
     {
-      "topic": "Recarga",
+      "topic": "Hidrômetro",
+      "count": 1,
+      "accuracy": 0
+    },
+    {
+      "topic": "Série-paralelo",
       "count": 1,
       "accuracy": 1
     }
