@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T18:19:16.774Z"
+    "exportedAt": "2026-02-23T18:51:21.517Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -145,7 +145,9 @@
       "cover": {
         "preset": "rays",
         "colorA": "rgba(0, 143, 199, 0.6)",
-        "colorB": "rgba(0, 98, 116, 0.4)"
+        "colorB": "rgba(0, 98, 116, 0.4)",
+        "emblem": "bolt",
+        "emblemColor": "rgba(0, 0, 0, 0.6)"
       },
       "progress": {
         "percent": 90,
