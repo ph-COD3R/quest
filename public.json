@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T16:42:37.537Z"
+    "exportedAt": "2026-02-23T17:15:47.562Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -282,6 +282,12 @@
       }
     }
   ],
+  "xpProgress": {
+    "level": 5,
+    "within": 0.10000000000002274,
+    "nextNeed": 200,
+    "xp": 550.1
+  },
   "questionSessions": [
     {
       "minutes": 1,
