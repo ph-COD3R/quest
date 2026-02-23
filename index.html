@@ -466,9 +466,6 @@
         <div class="left">
           <h2 class="h2" style="margin:0">🧭 Atividade recente</h2>
         </div>
-        <div class="filters">
-          <span class="chip" id="actHint">Somente leitura</span>
-        </div>
       </div>
       <p class="sub">Leitura (sessões) à esquerda • Questões resolvidas à direita. Listas com scroll interno (até 20 + 20).</p>
 
@@ -486,9 +483,6 @@
         <div class="splitPane">
           <div class="row">
             <b>🧩 Questões recentes</b>
-            <div class="row2" style="gap:8px; flex-wrap:wrap; justify-content:flex-end;">
-              <span class="chip" id="qTextToggle" style="cursor:pointer; user-select:none;">🙈 Ocultar texto</span>
-            </div>
           </div>
           <div class="themesRow" id="qThemesRow" style="margin-top:8px; display:none;"></div>
           <div class="scrollBox" style="margin-top:10px;">
@@ -982,32 +976,6 @@
       }
       card.style.display = "block";
 
-      const hint = $("#actHint");
-      if(hint){
-        hint.textContent = (reading.length>0 && recentQ.length>0) ? "Leitura + Questões" : (reading.length>0 ? "Somente leitura" : "Somente questões");
-      }
-
-      // ---- Toggle snippet visibility (persist) ----
-      window.__hideQText = (typeof window.__hideQText==="boolean") ? window.__hideQText : true;
-      try{
-        const raw = localStorage.getItem("quest_hide_q_text");
-        if(raw==="0") window.__hideQText = false;
-        if(raw==="1") window.__hideQText = true;
-      }catch(_){}
-
-      const tbtn = $("#qTextToggle");
-      if(tbtn){
-        tbtn.textContent = window.__hideQText ? "👁️ Mostrar texto" : "🙈 Ocultar texto";
-        if(!tbtn.__bound){
-          tbtn.__bound = true;
-          tbtn.onclick = ()=>{
-            window.__hideQText = !window.__hideQText;
-            try{ localStorage.setItem("quest_hide_q_text", window.__hideQText ? "1":"0"); }catch(_){}
-            renderSessions();
-          };
-        }
-      }
-
       // ---- Left: reading sessions ----
       const booksById = new Map((DATA.books||[]).map(b=>[b.id,b]));
       const rCount = $("#readingCount");
@@ -1036,7 +1004,7 @@
         }
       }
 
-      // ---- Right: recent question attempts ----
+      // ---- Right: themes (30d) ----
       const qThemesRow = $("#qThemesRow");
       if(qThemesRow){
         if(themes.length===0){
@@ -1052,6 +1020,7 @@
         }
       }
 
+      // ---- Right: recent question attempts (somente metadados) ----
       const qList = $("#qRecentList");
       if(qList){
         const fmtDurShortFromSec = (sec)=>{
@@ -1076,8 +1045,6 @@
             const book = (r.bookTitle||"").trim();
             const d = r.at ? (new Date(r.at).toLocaleDateString("pt-BR")) : "—";
             const dur = fmtDurShortFromSec(r.durationSec);
-            const snippetRaw = (r.promptSnippet||"").trim();
-            const snippet = snippetRaw ? (snippetRaw.length>90 ? (snippetRaw.slice(0,90)+"…") : snippetRaw) : "";
 
             const meta = [
               `<span class="tag">⏱️ ${escapeHtml(dur)}</span>`,
@@ -1091,7 +1058,6 @@
                 <b>${icon} ${escapeHtml(subj)} • ${escapeHtml(topic)}</b>
                 <div class="d">${ok ? "Acertou" : "Errou"}</div>
                 <div class="meta">${meta}</div>
-                ${(!window.__hideQText && snippet) ? `<div class="qSnippet">${escapeHtml(snippet)}</div>` : ``}
               </div>
             `;
           }).join("");
