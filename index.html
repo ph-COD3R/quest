@@ -247,14 +247,27 @@
 
     .book{
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(0,0,0,.16);
+      background:rgba(15,23,48,.55);
       border-radius:18px;
-      overflow:hidden;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:170px;
       cursor:pointer;
       transition: transform .12s ease, border-color .2s ease, background .2s ease;
+      overflow:hidden;
     }
-    .book:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.18);background:rgba(0,0,0,.20)}
-    .cover{height:82px;border-bottom:1px solid rgba(255,255,255,.10);position:relative}
+    .book:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.18);background:rgba(15,23,48,.70)}
+    .cover{
+      width:100%;
+      height:78px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+    }
+    .cover.hasImage{background-size:cover;background-position:center;}
     .cover::after{
       content:"";position:absolute;inset:-40px -60px auto auto;
       width:140px;height:140px;border-radius:50%;
@@ -265,26 +278,8 @@
     }
     .cover.hasImage::after{display:none;}
     .cover.hasEmblem::after{opacity:.06;}
-
-    /* --- Book cover emblem overlay (RPG style) --- */
-    .cover .emblem{
-      position:absolute; inset:0;
-      display:grid; place-items:center;
-      pointer-events:none;
-      z-index:3;
-    }
-    .emblemPlate{
-      width:56px;height:56px;border-radius:18px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
-      box-shadow: 0 16px 22px rgba(0,0,0,.35);
-      display:grid; place-items:center;
-      backdrop-filter: blur(3px);
-    }
-    .cover .emblemPlate{ transform: translateY(2px); }
-    .cover .emblem svg{ width:34px;height:34px; opacity:.92; overflow:visible; filter: drop-shadow(0 10px 14px rgba(0,0,0,.55)); }
-
-    .bookBody{padding:10px}
+    .bookBody{padding:0}
+    .bookTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
     .bookTitle{margin:0;font-weight:950;font-size:13px;line-height:1.2}
     .bookMeta{margin:4px 0 8px;color:var(--muted);font-size:12px}
     .miniRow{display:flex;justify-content:space-between;color:var(--muted);font-size:12px;margin-top:8px}
@@ -715,23 +710,17 @@
       // monochrome (uses currentColor)
       switch(id){
         case "sword":
-          return `<svg viewBox="-1 -1 26 26" fill="none" aria-hidden="true" overflow="visible">
-        <path d="M14.8 3.2 20.8 9.2 10 20H6.4v-3.6L17.2 5.6" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"/>
-        <path d="M12.2 6.9 17.1 11.8" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" opacity=".55"/>
-        <path d="M7.2 16.8 4 20" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M8.8 14.8 11.2 17.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M15.9 6.1 18 8.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
+      return `<svg viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M14.8 3.1c.4-.4 1-.4 1.4 0l4.7 4.7c.4.4.4 1 0 1.4l-2.0 2.0-2.2-2.2-6.6 6.6 1.8 1.8-2.0 2.0c-.4.4-1 .4-1.4 0l-1.4-1.4-1.5 1.5H3v-3.2l1.5-1.5-1.4-1.4c-.4-.4-.4-1 0-1.4l2.0-2.0 1.8 1.8 6.6-6.6-2.2-2.2 2.0-2.0Z"/>
+        <path fill="currentColor" opacity=".55" d="M6.2 14.2 9.8 17.8l-1.2 1.2-3.6-3.6z"/>
       </svg>`;
-        case "rogue":
-          return `<svg viewBox="-1 -1 26 26" fill="none" aria-hidden="true" overflow="visible">
-        <circle cx="15.2" cy="6.4" r="2.3" stroke="currentColor" stroke-width="2.2"/>
-        <path d="M11.2 20.2 12.7 14.3l2.8-2.2 2.8 1.6 1.4 4.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M7.2 13.6 11.2 10.7l3.2 1.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M9.6 20.4 6.8 21.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M16.4 18.9 14.6 21.2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/>
-        <path d="M4.2 12.1h3.2M3.8 15.7h3.0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".45"/>
+    case "rogue":
+      return `<svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="16.6" cy="6.3" r="2.1" fill="currentColor"/>
+        <path fill="currentColor" d="M11.2 21.3 12.9 15l3.1-2.6 2.8 1.4 1.0 3.6c.1.5-.1 1-.6 1.2l-1.3.5-1.1-3.1-2.2-1.1-1.6 2.2 1.9 3.1-1.6.9-2.1-3.3-1.6 2.1a1 1 0 0 1-1.2.3l-1.4-.6c-.5-.2-.7-.8-.4-1.3l2.8-4.7-2.4-1.2 1.0-1.9 3.4 1.7 2.1-1.1-2.2-1.2 1.0-1.8 3.4 1.8c.3.1.6.1.9 0l2.2-1.1 1.0 1.8-1.8.9 1.5 1.2-1.3 1.6-2.5-2.0-2.2 1.8-.9 3.4-1.7-.4.8-3.0-1.9 1.6-1.6 5.9Z"/>
+        <path fill="currentColor" opacity=".55" d="M3 12.2h4.8v1.8H3zm0 3.6h4.0v1.8H3z"/>
       </svg>`;
-        case "bolt":
+    case "bolt":
           return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke="currentColor" stroke-width="2.0" stroke-linejoin="round"/>
       </svg>`;
@@ -759,11 +748,11 @@
         <path d="M8.5 14h7" stroke="currentColor" stroke-width="1.7" opacity=".7" stroke-linecap="round"/>
       </svg>`;
         case "gear":
-          return `<svg viewBox="-1 -1 26 26" fill="none" aria-hidden="true" overflow="visible">
-        <path d="M12 15.6A3.6 3.6 0 1 0 12 8.4a3.6 3.6 0 0 0 0 7.2Z" stroke="currentColor" stroke-width="2.1"/>
-        <path d="M19.8 13.9c.07-.62.07-1.2 0-1.8l2.1-1.2-2.1-3.7-2.4.6a7.8 7.8 0 0 0-1.6-.9l-.9-2.3H9.1l-.9 2.3c-.56.24-1.1.54-1.6.9l-2.4-.6-2.1 3.7 2.1 1.2c-.07.6-.07 1.18 0 1.8l-2.1 1.2 2.1 3.7 2.4-.6c.5.35 1.04.65 1.6.9l.9 2.3h5.8l.9-2.3c.56-.24 1.1-.54 1.6-.9l2.4.6 2.1-3.7-2.1-1.2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" opacity=".78"/>
+      return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M 12.00 0.80 L 15.37 3.87 L 19.92 4.08 L 20.13 8.63 L 23.20 12.00 L 20.13 15.37 L 19.92 19.92 L 15.37 20.13 L 12.00 23.20 L 8.63 20.13 L 4.08 19.92 L 3.87 15.37 L 0.80 12.00 L 3.87 8.63 L 4.08 4.08 L 8.63 3.87 Z" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="3.9" stroke="currentColor" stroke-width="2.4"/>
       </svg>`;
-        case "tome":
+    case "tome":
         default:
           return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M6 20V6.5C6 5.12 7.12 4 8.5 4H19v14h-9.5C7.12 18 6 19.12 6 20Z" stroke="currentColor" stroke-width="2.0" stroke-linejoin="round"/>
@@ -932,8 +921,8 @@
 
     async function tryFetchPublic(){
       try{
-        const url = "./public.json?ts=" + Date.now();
-        const r = await fetch(url, {cache:"no-store"});
+        const url = "./public.json?ts=" + Date.now() + "&r=" + Math.random().toString(16).slice(2);
+        const r = await fetch(url, {cache:"reload"});
         if(!r.ok) throw new Error("fetch not ok");
         const buf = await r.arrayBuffer();
         const u8 = new Uint8Array(buf);
@@ -1535,16 +1524,16 @@
         return `
           <div class="book" data-book="${escapeHtml(b.id)}">
             <div class="${coverCls}" style="${cover}">${emblem}</div>
-            <div class="bookBody">
-              <div class="row">
+            <div class="bookTop">
+              <div style="min-width:0;">
                 <p class="bookTitle">${escapeHtml(b.title)}</p>
-                <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${badge}${stars}${review}</div>
+                <p class="bookMeta">${escapeHtml(meta)}</p>
               </div>
-              <p class="bookMeta">${escapeHtml(meta)}</p>
-              <div class="bar"><i style="width:${b.progress.percent}%"></i></div>
-              <div class="miniRow"><span>${escapeHtml(b.progress.topicsDone)}/${escapeHtml(b.progress.topicsTotal)} tópicos</span><span>${escapeHtml(b.progress.chaptersDone)}/${escapeHtml(b.progress.chaptersTotal)} cap.</span></div>
-              ${tags ? `<div class="tagRow">${tags}</div>` : ``}
+              <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">${badge}${stars}${review}</div>
             </div>
+            <div class="bar"><i style="width:${b.progress.percent}%"></i></div>
+            <div class="miniRow"><span>${escapeHtml(b.progress.topicsDone)}/${escapeHtml(b.progress.topicsTotal)} tópicos</span><span>${escapeHtml(b.progress.chaptersDone)}/${escapeHtml(b.progress.chaptersTotal)} cap.</span></div>
+            ${tags ? `<div class="tagRow">${tags}</div>` : ``}
           </div>
         `;
       }).join("");
