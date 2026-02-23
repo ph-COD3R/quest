@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T04:43:38.102Z"
+    "exportedAt": "2026-02-23T04:55:49.293Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -161,7 +161,7 @@
       "review": null,
       "bookStats": {
         "readingMinTotal": 551,
-        "lastActivityAt": "2026-02-23T03:55:27.993Z",
+        "lastActivityAt": "2026-02-23T04:44:56.852Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -303,13 +303,23 @@
   ],
   "questionStats": {
     "total": 42,
-    "attempted": 6,
-    "correct": 19,
+    "attempted": 7,
+    "correct": 20,
     "wrong": 3,
-    "accuracy": 0.8636363636363636,
+    "accuracy": 0.8695652173913043,
     "timeMinTotal": 3
   },
   "recentQuestions": [
+    {
+      "at": "2026-02-23T04:44:56.852Z",
+      "subject": "Eletricidade",
+      "topic": "Recarga",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 13,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Ao recarregar uma pilha/bateria, a conexão correta é:"
+    },
     {
       "at": "2026-02-23T00:05:44.641Z",
       "subject": "Eletricidade",
@@ -335,6 +345,11 @@
     {
       "topic": "Circuito Paralelo CC",
       "count": 2,
+      "accuracy": 1
+    },
+    {
+      "topic": "Recarga",
+      "count": 1,
       "accuracy": 1
     }
   ]
