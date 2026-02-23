@@ -277,26 +277,6 @@
     .x:hover{background:rgba(255,255,255,.10)}
     .review{white-space:pre-wrap;line-height:1.45;color:rgba(233,237,247,.90);font-size:13px}
     .small{font-size:12px;color:var(--muted)}
-
-    .chip.click{cursor:pointer;user-select:none}
-    .chip.click:hover{background:rgba(255,255,255,.10)}
-    .scrollBox{
-      max-height:260px;
-      overflow:auto;
-      padding-right:6px;
-      scrollbar-width:thin;
-      scrollbar-color: rgba(255,255,255,.18) rgba(0,0,0,.10);
-    }
-    .scrollBox::-webkit-scrollbar{width:10px}
-    .scrollBox::-webkit-scrollbar-track{background:rgba(0,0,0,.12);border-radius:999px}
-    .scrollBox::-webkit-scrollbar-thumb{
-      background:rgba(255,255,255,.14);
-      border-radius:999px;
-      border:2px solid rgba(0,0,0,0);
-      background-clip: padding-box;
-    }
-    .scrollBox::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.20);background-clip: padding-box}
-
   </style>
 </head>
 <body>
@@ -336,6 +316,7 @@
         <div class="chips">
           <!-- Mostra apenas em erro (quando estiver ok, fica oculto) -->
           <span class="chip warn" id="statusChip" style="display:none;">Carregando public.json…</span>
+          <label class="chip" id="loadLocalChip" style="display:none; cursor:pointer;" title="Carregar public.json manualmente (útil ao abrir este HTML direto pelo disco).">📄 Carregar public.json<input id="localPublicFile" type="file" accept="application/json" style="display:none" /></label>
         </div>
       </div>
     </div>
@@ -362,8 +343,6 @@
             </div>
           </div>
         </div>
-
-        <div class="statGrid" id="qStatGrid" style="display:none;"></div>
 
         <div class="statGrid" id="statGrid"></div>
 
@@ -435,30 +414,6 @@
       <div id="sessionList" class="achList"></div>
     </section>
 
-
-    <section class="card" id="recentQuestionsCard" style="margin-top:14px; display:none;">
-      <div class="sectionTitle">
-        <div class="left">
-          <h2 class="h2" style="margin:0">🧠 Questões recentes</h2>
-          <span class="chip" id="recentCountChip">0</span>
-        </div>
-        <div class="filters">
-          <span class="chip click" id="rqToggleSnip">👁️ Mostrar trechos</span>
-        </div>
-      </div>
-      <p class="sub">Últimas questões feitas (somente metadados; trechos curtos são opcionais).</p>
-      <div id="recentQuestionsList" class="achList"></div>
-
-      <div class="hr"></div>
-
-      <div class="row">
-        <b>🔥 Temas (30 dias)</b>
-        <span class="muted" id="themesNote">—</span>
-      </div>
-      <div id="themeList" class="achList" style="margin-top:10px;"></div>
-    </section>
-
-
     <p class="muted" style="text-align:center; margin:16px 0 6px; font-size:12px;">
       Feitosa_exe
     </p>
@@ -483,12 +438,6 @@
     const $$ = (q, el=document)=> Array.from(el.querySelectorAll(q));
 
     function pct(x){ return Math.round((Number(x)||0)*100); }
-
-    function fmtInt(n){
-      const x = Number(n||0);
-      if(!Number.isFinite(x)) return "0";
-      return Math.round(x).toLocaleString("pt-BR");
-    }
 
     // ===== Corrige strings “BÃ¡sica” (UTF-8 lido como Latin-1) quando acontecer =====
     function fixMojibake(s){
@@ -517,25 +466,6 @@
       if(m===0) return `${h}h`;
       return `${h}h${String(m).padStart(2,"0")}`;
     }
-
-    function fmtDT(iso){
-      try{
-        const d = new Date(iso);
-        if(Number.isNaN(d.getTime())) return "—";
-        const pad = (n)=>String(n).padStart(2,"0");
-        return `${pad(d.getDate())}/${pad(d.getMonth()+1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-      }catch(_){ return "—"; }
-    }
-
-    function fmtDurShortFromSec(sec){
-      sec = Math.max(0, Math.floor(Number(sec||0)));
-      const hh = Math.floor(sec/3600);
-      const mm = Math.floor((sec%3600)/60);
-      const ss = sec%60;
-      if(hh>0) return `${hh}:${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
-      return `${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
-    }
-
 
     function coverStyle(cover){
       const A = cover?.colorA || "rgba(106,168,255,.75)";
@@ -689,25 +619,8 @@
         box.textContent = map[a.icon] || "👤";
       }
 
-      // ===== Banco de questões (mini-cards) =====
-      const qs = DATA.questionStats || null;
-      const qg = $("#qStatGrid");
-      if(qg && qs && Number(qs.total||0)>0){
-        const acc = Number(qs.accuracy||0);
-        const items = [
-          ["📦 Banco de questões", fmtInt(qs.total)],
-          ["✅ Resolvidas", fmtInt(qs.attempted)],
-          ["🎯 Acerto", `${Math.round(acc*100)}%`],
-        ];
-        if(qs.timeMinTotal!=null) items.push(["⏱️ Questões", minutesToH(qs.timeMinTotal)]);
-        qg.style.display = "";
-        qg.innerHTML = items.map(([k,v])=>`<div class="stat"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>`).join("");
-      }else if(qg){
-        qg.style.display = "none";
-        qg.innerHTML = "";
-      }
-
-$1        ["📚 Livros", `${st.booksTotal ?? 0}`],
+      const stats = [
+        ["📚 Livros", `${st.booksTotal ?? 0}`],
         ["✅ Finalizados", `${st.booksFinished ?? 0}`],
         ["📖 Em progresso", `${st.booksInProgress ?? 0}`],
         ["🧩 Tópicos", `${st.topicsDone ?? 0}/${st.topicsTotal ?? 0}`],
@@ -956,68 +869,6 @@ $1        ["📚 Livros", `${st.booksTotal ?? 0}`],
       }).join("");
     }
 
-    // ===== Questões recentes (metadados) =====
-    let _showQSnips = false;
-    function renderRecentQuestions(){
-      const card = $("#recentQuestionsCard");
-      const listEl = $("#recentQuestionsList");
-      const themeEl = $("#themeList");
-      const toggle = $("#rqToggleSnip");
-      const countChip = $("#recentCountChip");
-      if(!card || !listEl || !themeEl || !toggle || !countChip) return;
-
-      const recAll = Array.isArray(DATA.recentQuestions) ? DATA.recentQuestions : [];
-      const rec = recAll.slice(0, 10);
-      if(rec.length===0){
-        card.style.display = "none";
-        return;
-      }
-      card.style.display = "block";
-      countChip.textContent = `${recAll.length} (máx 50)`;
-      toggle.textContent = _showQSnips ? "🙈 Ocultar trechos" : "👁️ Mostrar trechos";
-      toggle.onclick = ()=>{ _showQSnips = !_showQSnips; renderRecentQuestions(); };
-
-      listEl.innerHTML = rec.map(r=>{
-        const res = r.result==="ok" ? "✅" : "❌";
-        const when = r.at ? fmtDT(r.at) : "—";
-        const dur = (r.durationSec===0 || r.durationSec) ? fmtDurShortFromSec(r.durationSec) : "—";
-        const subj = txt(r.subject||"");
-        const topic = txt(r.topic||"");
-        const diff = txt(r.difficulty||"");
-        const head = [subj, topic].filter(Boolean).join(" • ") || "Questão";
-        const meta = [diff, (r.bookTitle?txt(r.bookTitle):"")].filter(Boolean).join(" • ");
-        const snip = txt(r.promptSnippet||"");
-        return `
-          <div class="ach">
-            <b>${res} ${escapeHtml(head)}</b>
-            <div class="d">${escapeHtml(meta || "—")}</div>
-            <div class="meta">
-              <span class="tag">📅 ${escapeHtml(when)}</span>
-              <span class="tag">⏱️ ${escapeHtml(dur)}</span>
-            </div>
-            ${snip ? `<div class="small" style="margin-top:8px; display:${_showQSnips?"block":"none"};">${escapeHtml(snip)}</div>` : ``}
-          </div>
-        `;
-      }).join("");
-
-      // Themes (top 5)
-      const themes = Array.isArray(DATA.questionThemes30d) ? DATA.questionThemes30d : [];
-      $("#themesNote").textContent = themes.length ? `${themes.reduce((a,x)=>a+Number(x.count||0),0)} questão(ões)` : "—";
-      if(!themes.length){
-        themeEl.innerHTML = `<div class="empty">Sem dados de temas (30 dias).</div>`;
-        return;
-      }
-      themeEl.innerHTML = themes.slice(0,5).map(t=>{
-        const acc = (t.accuracy==null) ? null : Math.round(Number(t.accuracy||0)*100);
-        return `
-          <div class="ach">
-            <b>${escapeHtml(txt(t.topic||"(sem tópico)"))}</b>
-            <div class="d">${escapeHtml(fmtInt(t.count||0))} questão(ões) ${acc==null?"" : `• 🎯 ${acc}%`}</div>
-          </div>
-        `;
-      }).join("");
-    }
-
     function openBookModal(book){
       $("#modalTitle").textContent = txt(book.title || "Livro");
       const metaParts = [];
@@ -1053,56 +904,6 @@ $1        ["📚 Livros", `${st.booksTotal ?? 0}`],
           <div class="meta"><span class="tag">📖 ${escapeHtml(book.progress.chaptersTotal - book.progress.chaptersDone)} restantes</span></div>
         </div>
       `);
-
-      // ===== Modal expandido (bookStats) =====
-      const bs = book.bookStats || null;
-      if(bs && typeof bs==="object"){
-        const readMin = Number(bs.readingMinTotal||0);
-        const qMin = (bs.questionsMinTotal==null) ? null : Number(bs.questionsMinTotal||0);
-        const lastAt = bs.lastActivityAt ? String(bs.lastActivityAt) : "";
-        parts.push(`<div class="hr"></div>`);
-        parts.push(`<b>⏱️ Tempo</b>`);
-        parts.push(`
-          <div class="ach" style="margin-top:10px;">
-            <b>📖 Leitura/estudo</b>
-            <div class="d">${escapeHtml(minutesToH(readMin))}</div>
-            <div class="meta">
-              ${qMin!=null && qMin>0 ? `<span class="tag">🧠 Questões: ${escapeHtml(minutesToH(qMin))}</span>` : ``}
-              ${lastAt ? `<span class="tag">🕒 Última: ${escapeHtml(fmtDT(lastAt))}</span>` : ``}
-            </div>
-          </div>
-        `);
-
-        const chs = Array.isArray(bs.chapters) ? bs.chapters : [];
-        if(chs.length){
-          parts.push(`<div class="hr"></div>`);
-          parts.push(`<b>📑 Capítulos</b>`);
-          const rows = chs.map(ch=>{
-            const title = txt(ch.title||"Capítulo");
-            const done = Number(ch.doneTopics||0);
-            const total = Number(ch.totalTopics||0);
-            const completed = !!ch.completed || (total>0 && done===total);
-            const badge = completed ? `<span class="badge good">Concluído</span>` : (done>0 ? `<span class="badge warn">Em andamento</span>` : `<span class="badge">Pendente</span>`);
-            return `
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid rgba(255,255,255,.08);">
-                <div style="min-width:0">
-                  <b style="font-size:13px; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escapeHtml(title)}</b>
-                  <div class="small">${escapeHtml(done)}/${escapeHtml(total)} tópicos</div>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end;">
-                  ${badge}
-                </div>
-              </div>
-            `;
-          }).join("");
-          parts.push(`
-            <div class="ach" style="margin-top:10px;">
-              <div class="scrollBox">${rows}</div>
-            </div>
-          `);
-        }
-      }
-
 
       if(book.finished){
         const review = txt((book.review||"").trim());
@@ -1194,13 +995,38 @@ $1        ["📚 Livros", `${st.booksTotal ?? 0}`],
       renderBooks();
       renderAchievements();
       renderSessions();
-      renderRecentQuestions();
 
       setupAchievementObserver();
       syncAchievementPanel();
     }
 
     bindUI();
+
+    // Fallback: se abrir pelo disco (file://), o fetch do public.json costuma falhar.
+    // Então oferecemos carregamento manual via seletor de arquivo.
+    (function(){
+      const inp = $("#localPublicFile");
+      const chip = $("#loadLocalChip");
+      if(!inp || !chip) return;
+      inp.addEventListener("change", async (e)=>{
+        const f = e.target.files && e.target.files[0];
+        if(!f) return;
+        try{
+          const text = await f.text();
+          const j = JSON.parse(text);
+          chip.style.display = "none";
+          loadData(j);
+          setStatus("", "good");
+        }catch(err){
+          console.error(err);
+          setStatus("Falha ao ler este public.json.", "bad");
+        }finally{
+          e.target.value = "";
+        }
+      });
+      chip.addEventListener("click", ()=> inp.click());
+    })();
+
     (async ()=>{
       setStatus("Carregando public.json…", "warn");
 
@@ -1209,13 +1035,13 @@ $1        ["📚 Livros", `${st.booksTotal ?? 0}`],
         loadData(j);
       }else{
         setStatus("public.json não encontrado nesta pasta.", "bad");
+        const lc = $("#loadLocalChip"); if(lc) lc.style.display = "inline-flex";
         DATA = { meta:{schema:"public.v1"}, profile:{}, ranks:{}, stats:{}, achievements:{autoUnlocked:[],manual:[]}, sessions:[], books:[] };
         renderProfile();
         computeTagOptions([]);
         renderBooks();
         renderAchievements();
         renderSessions();
-        renderRecentQuestions();
         setupAchievementObserver();
         syncAchievementPanel();
       }
