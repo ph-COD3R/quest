@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T03:56:09.082Z"
+    "exportedAt": "2026-02-23T04:43:38.102Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -302,7 +302,7 @@
     }
   ],
   "questionStats": {
-    "total": 6,
+    "total": 42,
     "attempted": 6,
     "correct": 19,
     "wrong": 3,
