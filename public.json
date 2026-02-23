@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T16:00:32.687Z"
+    "exportedAt": "2026-02-23T16:40:46.925Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -162,7 +162,7 @@
       "bookStats": {
         "readingMinTotal": 551,
         "questionsMinTotal": 2,
-        "lastActivityAt": "2026-02-23T16:00:17.976Z",
+        "lastActivityAt": "2026-02-23T16:39:13.614Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -311,12 +311,22 @@
   "questionStats": {
     "total": 42,
     "attempted": 11,
-    "correct": 23,
+    "correct": 24,
     "wrong": 6,
-    "accuracy": 0.7931034482758621,
+    "accuracy": 0.8,
     "timeMinTotal": 4
   },
   "recentQuestions": [
+    {
+      "at": "2026-02-23T16:39:13.614Z",
+      "subject": "Eletricidade",
+      "topic": "Baterias",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 8,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Ao recarregar uma pilha/bateria, a conexão correta é:"
+    },
     {
       "at": "2026-02-23T16:00:17.976Z",
       "subject": "Eletricidade",
@@ -425,12 +435,12 @@
       "accuracy": 1
     },
     {
-      "topic": "Resistência interna",
+      "topic": "Baterias",
       "count": 1,
-      "accuracy": 0
+      "accuracy": 1
     },
     {
-      "topic": "Hidrômetro",
+      "topic": "Resistência interna",
       "count": 1,
       "accuracy": 0
     }
