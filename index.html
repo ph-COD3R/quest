@@ -278,6 +278,19 @@
     }
     .cover.hasImage::after{display:none;}
     .cover.hasEmblem::after{opacity:.06;}
+    /* emblem (ícone central da capa) — mantém o SVG contido e consistente com o QUEST */
+    .cover .emblem{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+    .cover .emblemPlate{
+      width:46px;height:46px;border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.18);
+      box-shadow:0 14px 26px rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .cover .emblemPlate svg{width:64%;height:64%;display:block;}
+
     .bookBody{padding:0}
     .bookTop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
     .bookTitle{margin:0;font-weight:950;font-size:13px;line-height:1.2}
@@ -710,17 +723,23 @@
       // monochrome (uses currentColor)
       switch(id){
         case "sword":
-      return `<svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M14.8 3.1c.4-.4 1-.4 1.4 0l4.7 4.7c.4.4.4 1 0 1.4l-2.0 2.0-2.2-2.2-6.6 6.6 1.8 1.8-2.0 2.0c-.4.4-1 .4-1.4 0l-1.4-1.4-1.5 1.5H3v-3.2l1.5-1.5-1.4-1.4c-.4-.4-.4-1 0-1.4l2.0-2.0 1.8 1.8 6.6-6.6-2.2-2.2 2.0-2.0Z"/>
-        <path fill="currentColor" opacity=".55" d="M6.2 14.2 9.8 17.8l-1.2 1.2-3.6-3.6z"/>
+      return `<svg viewBox="0 0 64 64" aria-hidden="true">
+        <g fill="currentColor" transform="rotate(-35 32 32)">
+          <path d="M32 4 46 18h-8v26H26V18h-8L32 4Z"/>
+          <rect x="16" y="44" width="32" height="6" rx="2"/>
+          <rect x="28" y="50" width="8" height="12" rx="2"/>
+          <circle cx="32" cy="62" r="4"/>
+        </g>
       </svg>`;
-    case "rogue":
-      return `<svg viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="16.6" cy="6.3" r="2.1" fill="currentColor"/>
-        <path fill="currentColor" d="M11.2 21.3 12.9 15l3.1-2.6 2.8 1.4 1.0 3.6c.1.5-.1 1-.6 1.2l-1.3.5-1.1-3.1-2.2-1.1-1.6 2.2 1.9 3.1-1.6.9-2.1-3.3-1.6 2.1a1 1 0 0 1-1.2.3l-1.4-.6c-.5-.2-.7-.8-.4-1.3l2.8-4.7-2.4-1.2 1.0-1.9 3.4 1.7 2.1-1.1-2.2-1.2 1.0-1.8 3.4 1.8c.3.1.6.1.9 0l2.2-1.1 1.0 1.8-1.8.9 1.5 1.2-1.3 1.6-2.5-2.0-2.2 1.8-.9 3.4-1.7-.4.8-3.0-1.9 1.6-1.6 5.9Z"/>
-        <path fill="currentColor" opacity=".55" d="M3 12.2h4.8v1.8H3zm0 3.6h4.0v1.8H3z"/>
+        case "rogue":
+      return `<svg viewBox="0 0 64 64" aria-hidden="true" fill="none">
+        <path d="M10 22h18M10 32h14M10 42h18" stroke="currentColor" stroke-width="6" stroke-linecap="round" opacity=".55"/>
+        <circle cx="46" cy="14" r="6" fill="currentColor"/>
+        <path d="M38 22 30 34l-10-4" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M30 34 44 38l8 10" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M34 56 42 38l12-8" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>`;
-    case "bolt":
+        case "bolt":
           return `<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8Z" stroke="currentColor" stroke-width="2.0" stroke-linejoin="round"/>
       </svg>`;
@@ -922,7 +941,7 @@
     async function tryFetchPublic(){
       try{
         const url = "./public.json?ts=" + Date.now() + "&r=" + Math.random().toString(16).slice(2);
-        const r = await fetch(url, {cache:"reload"});
+        const r = await fetch(url, {cache:"no-store"});
         if(!r.ok) throw new Error("fetch not ok");
         const buf = await r.arrayBuffer();
         const u8 = new Uint8Array(buf);
