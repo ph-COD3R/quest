@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-22T23:45:43.077Z"
+    "exportedAt": "2026-02-23T00:04:30.160Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -151,7 +151,127 @@
       "finishedAt": null,
       "stars": null,
       "tags": [],
-      "review": null
+      "review": null,
+      "bookStats": {
+        "readingMinTotal": 466,
+        "lastActivityAt": "2026-02-23T00:01:35.971Z",
+        "chapters": [
+          {
+            "title": "A NATUREZA DA ELETRICIDADE",
+            "doneTopics": 9,
+            "totalTopics": 9,
+            "completed": true
+          },
+          {
+            "title": "PADRÕES ELÉTRICOS E CONVENÇÕES",
+            "doneTopics": 5,
+            "totalTopics": 5,
+            "completed": true
+          },
+          {
+            "title": "LEI DE OHM E POTÊNCIA",
+            "doneTopics": 8,
+            "totalTopics": 8,
+            "completed": true
+          },
+          {
+            "title": "CIRCUITOS SÉRIE DE CORRENTE CONTÍNUA",
+            "doneTopics": 5,
+            "totalTopics": 5,
+            "completed": true
+          },
+          {
+            "title": "CIRCUITOS PARALELO DE CORRENTE CONTÍNUA",
+            "doneTopics": 6,
+            "totalTopics": 6,
+            "completed": true
+          },
+          {
+            "title": "BATERIAS",
+            "doneTopics": 0,
+            "totalTopics": 5,
+            "completed": false
+          },
+          {
+            "title": "LEIS DE KIRCHHOFF",
+            "doneTopics": 0,
+            "totalTopics": 4,
+            "completed": false
+          },
+          {
+            "title": "CÁLCULO DE REDES",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "MAGNETISMO ELÉTROMAGNETISMO",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "GERADORES E MOTORES DE CORRENTE CONTÍNUA",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "PRINCÍPIOS DA CORRENTE ALTERNADA",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "INDUTÂNCIA, REATÂNCIA INDUTIVA E CIRCUITOS INDUTIVOS",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "CIRCUITOS MONOFÁSICOS",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "GERADORES E MOTORES DE CORRENTE ALTERNADA",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "TRANSFORMADORES",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "SISTEMAS TRIFÁSICOS",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "RESSONÂNCIA SÉRIE E RESSONÂNCIA PARALELA",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "FORMAS DE ONDA E CONSTANTES DE TEMPO",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          },
+          {
+            "title": "MEDIDAS ELÉTRICAS",
+            "doneTopics": 0,
+            "totalTopics": 0,
+            "completed": false
+          }
+        ]
+      }
     }
   ],
   "questionSessions": [
@@ -172,6 +292,33 @@
       "note": "Questões — filtros",
       "start": "2026-02-22T20:57:15.539Z",
       "end": "2026-02-22T20:57:16.905Z"
+    }
+  ],
+  "questionStats": {
+    "total": 6,
+    "attempted": 6,
+    "correct": 18,
+    "wrong": 3,
+    "accuracy": 0.8571428571428571,
+    "timeMinTotal": 3
+  },
+  "recentQuestions": [
+    {
+      "at": "2026-02-23T00:01:35.971Z",
+      "subject": "Eletricidade",
+      "topic": "Circuito Paralelo CC",
+      "difficulty": "Normal",
+      "result": "ok",
+      "durationSec": 4,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Divisor de corrente (2 ramos): IT = 12 A, R1 = 3 Ω e R2 = 9 Ω em paralelo. Qual é a corre…"
+    }
+  ],
+  "questionThemes30d": [
+    {
+      "topic": "Circuito Paralelo CC",
+      "count": 1,
+      "accuracy": 1
     }
   ]
 }
