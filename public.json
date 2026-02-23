@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T01:43:09.315Z"
+    "exportedAt": "2026-02-23T03:56:09.082Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -33,12 +33,12 @@
     "booksTotal": 1,
     "booksFinished": 0,
     "booksInProgress": 1,
-    "topicsDone": 33,
+    "topicsDone": 38,
     "topicsTotal": 42,
-    "overallProgressPercent": 79,
-    "streakCurrent": 1,
+    "overallProgressPercent": 90,
+    "streakCurrent": 2,
     "streakBest": 2,
-    "totalMinutes": 466,
+    "totalMinutes": 551,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 3,
     "bestQuestionsPracticeSessionMinutes": 1
@@ -77,6 +77,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 85,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 8,
@@ -141,10 +148,10 @@
         "colorB": "rgba(29, 173, 30, 0.6)"
       },
       "progress": {
-        "percent": 79,
-        "topicsDone": 33,
+        "percent": 90,
+        "topicsDone": 38,
         "topicsTotal": 42,
-        "chaptersDone": 5,
+        "chaptersDone": 6,
         "chaptersTotal": 19
       },
       "finished": false,
@@ -153,8 +160,8 @@
       "tags": [],
       "review": null,
       "bookStats": {
-        "readingMinTotal": 466,
-        "lastActivityAt": "2026-02-23T00:05:44.641Z",
+        "readingMinTotal": 551,
+        "lastActivityAt": "2026-02-23T03:55:27.993Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -188,9 +195,9 @@
           },
           {
             "title": "BATERIAS",
-            "doneTopics": 0,
+            "doneTopics": 5,
             "totalTopics": 5,
-            "completed": false
+            "completed": true
           },
           {
             "title": "LEIS DE KIRCHHOFF",
