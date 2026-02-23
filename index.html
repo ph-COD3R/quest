@@ -142,6 +142,38 @@
     .stat .k{font-size:11px;color:var(--muted)}
     .stat .v{font-size:15px;font-weight:900;margin-top:2px}
 
+    .stat.small{padding:9px;border-radius:16px}
+    .stat.small .k{font-size:11px}
+    .stat.small .v{font-size:14px}
+
+    /* ===== Livro: capítulos (scroll interno no modal) ===== */
+    .chList{
+      display:grid;gap:8px;margin-top:10px;
+      max-height:280px; overflow:auto;
+      padding-right:6px;
+      scrollbar-width:thin;
+      scrollbar-color: rgba(255,255,255,.18) rgba(0,0,0,.10);
+    }
+    .chList::-webkit-scrollbar{width:10px}
+    .chList::-webkit-scrollbar-track{background:rgba(0,0,0,.12);border-radius:999px}
+    .chList::-webkit-scrollbar-thumb{
+      background:rgba(255,255,255,.14);
+      border-radius:999px;
+      border:2px solid rgba(0,0,0,0);
+      background-clip: padding-box;
+    }
+    .chList::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.20);background-clip: padding-box}
+
+    .chItem{
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.14);
+      border-radius:16px;
+      padding:10px;
+    }
+    .chTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .chTitle{font-weight:950;font-size:13px;line-height:1.25}
+    .chSub{margin-top:4px;font-size:12px;color:var(--muted)}
+
     .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.10);overflow:hidden}
     .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg, rgba(244,184,74,.85), rgba(125,179,255,.85))}
     .bar i.good{background:linear-gradient(90deg, rgba(111,231,185,.9), rgba(125,179,255,.75))}
@@ -345,6 +377,7 @@
         </div>
 
         <div class="statGrid" id="statGrid"></div>
+        <div class="statGrid" id="qStatGrid" style="margin-top:10px; display:none;"></div>
 
         <div class="hr"></div>
 
@@ -438,6 +471,21 @@
     const $$ = (q, el=document)=> Array.from(el.querySelectorAll(q));
 
     function pct(x){ return Math.round((Number(x)||0)*100); }
+
+    const __NF = (typeof Intl!=="undefined" && Intl.NumberFormat) ? new Intl.NumberFormat("pt-BR") : null;
+    function fmtInt(n){
+      n = Number(n||0);
+      if(!Number.isFinite(n)) n = 0;
+      n = Math.round(n);
+      return __NF ? __NF.format(n) : String(n);
+    }
+    function fmtDateShort(iso){
+      if(!iso) return null;
+      try{
+        const d = new Date(iso);
+        return d.toLocaleDateString("pt-BR");
+      }catch(_){ return null; }
+    }
 
     // ===== Corrige strings “BÃ¡sica” (UTF-8 lido como Latin-1) quando acontecer =====
     function fixMojibake(s){
@@ -633,6 +681,38 @@
       $("#statGrid").innerHTML = stats.map(([k,v])=>`
         <div class="stat"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>
       `).join("");
+
+      // ===== Questões (opcional) =====
+      const qs = DATA.questionStats || null;
+      const qGrid = $("#qStatGrid");
+      if(qGrid){
+        if(qs && (qs.total!=null || qs.attempted!=null || qs.correct!=null || qs.wrong!=null)){
+          const totalQ = Number(qs.total||0) || 0;
+          const attempted = Number(qs.attempted||0) || 0;
+          const correct = Number(qs.correct||0) || 0;
+          const wrong = Number(qs.wrong||0) || 0;
+          const denom = correct + wrong;
+          const accRaw = (qs.accuracy===0 || qs.accuracy) ? Number(qs.accuracy) : (denom ? (correct/denom) : 0);
+          const accPct = denom ? Math.round(Math.max(0, Math.min(1, accRaw)) * 100) : null;
+          const timeMin = (qs.timeMinTotal===0 || qs.timeMinTotal) ? Number(qs.timeMinTotal) : null;
+
+          const cards = [
+            ["📦 Banco de questões", fmtInt(totalQ)],
+            ["✅ Resolvidas", fmtInt(attempted)],
+            ["🎯 Acerto", (accPct==null ? "—" : `${accPct}%`)]
+          ];
+          if(timeMin!=null && timeMin>0) cards.push(["⏱️ Questões", minutesToH(timeMin)]);
+
+          qGrid.style.display = "";
+          qGrid.innerHTML = cards.map(([k,v])=>`
+            <div class="stat small"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>
+          `).join("");
+        }else{
+          qGrid.style.display = "none";
+          qGrid.innerHTML = "";
+        }
+      }
+
 
       $("#booksLine").textContent = `${rb.finishedBooks ?? 0} finalizados`;
       $("#booksBar").style.width = `${pct(rb.progress ?? 0)}%`;
@@ -904,6 +984,57 @@
           <div class="meta"><span class="tag">📖 ${escapeHtml(book.progress.chaptersTotal - book.progress.chaptersDone)} restantes</span></div>
         </div>
       `);
+
+      // ===== BookStats (opcional / leve) =====
+      const bs = book.bookStats || null;
+      if(bs){
+        const readingMin = Number(bs.readingMinTotal||0) || 0;
+        const qMin = (bs.questionsMinTotal===0 || bs.questionsMinTotal) ? (Number(bs.questionsMinTotal)||0) : null;
+        const last = bs.lastActivityAt ? fmtDateShort(bs.lastActivityAt) : null;
+
+        parts.push(`<div class="hr"></div>`);
+        parts.push(`<b>📊 Atividade</b>`);
+        const statRows = [];
+        statRows.push(`<div class="stat small"><div class="k">📖 Leitura</div><div class="v">${escapeHtml(minutesToH(readingMin))}</div></div>`);
+        if(qMin!=null && qMin>0) statRows.push(`<div class="stat small"><div class="k">🧩 Questões</div><div class="v">${escapeHtml(minutesToH(qMin))}</div></div>`);
+        if(last) statRows.push(`<div class="stat small"><div class="k">🕘 Última</div><div class="v">${escapeHtml(last)}</div></div>`);
+        parts.push(`<div class="statGrid" style="margin-top:10px; grid-template-columns:repeat(3,1fr);">${statRows.join("")}</div>`);
+
+        const chs = Array.isArray(bs.chapters) ? bs.chapters : [];
+        if(chs.length){
+          parts.push(`<div class="hr"></div>`);
+          parts.push(`<b>📑 Capítulos</b>`);
+          parts.push(`<div class="small" style="margin-top:6px;">${escapeHtml(fmtInt(chs.length))} capítulo(s) • status por tópicos concluídos.</div>`);
+
+          const items = chs.map(ch=>{
+            const title = txt(ch?.title || "Capítulo");
+            const totalTopics = Number(ch?.totalTopics||0) || 0;
+            const doneTopics = Number(ch?.doneTopics||0) || 0;
+            const completed = !!ch?.completed;
+
+            const p = totalTopics ? Math.round((doneTopics/totalTopics)*100) : 0;
+            const badge = completed
+              ? `<span class="badge good">Concluído</span>`
+              : (doneTopics>0
+                  ? `<span class="badge warn">${p}%</span>`
+                  : `<span class="badge">Novo</span>`);
+
+            return `
+              <div class="chItem">
+                <div class="chTop">
+                  <div style="min-width:0;">
+                    <div class="chTitle">${escapeHtml(title)}</div>
+                    <div class="chSub">${escapeHtml(fmtInt(doneTopics))}/${escapeHtml(fmtInt(totalTopics))} tópicos</div>
+                  </div>
+                  <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end">${badge}</div>
+                </div>
+              </div>
+            `;
+          }).join("");
+
+          parts.push(`<div class="chList">${items}</div>`);
+        }
+      }
 
       if(book.finished){
         const review = txt((book.review||"").trim());
