@@ -149,7 +149,7 @@
     /* ===== Livro: capítulos (scroll interno no modal) ===== */
     .chList{
       display:grid;gap:8px;margin-top:10px;
-      max-height:280px; overflow:auto;
+      max-height:220px; overflow:auto;
       padding-right:6px;
       scrollbar-width:thin;
       scrollbar-color: rgba(255,255,255,.18) rgba(0,0,0,.10);
@@ -278,6 +278,9 @@
     }
     .modal{
       width:min(760px, 100%);
+      max-height: calc(100vh - 32px);
+      display:flex;
+      flex-direction:column;
       border-radius:12px; /* mais “painel” */
       border:1px solid rgba(255,213,138,.16);
       background:
@@ -296,7 +299,7 @@
       pointer-events:none;
     }
     .modalHead{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;padding:14px 14px 0;position:relative}
-    .modalBody{padding:12px 14px 14px;position:relative}
+    .modalBody{padding:10px 14px 14px;position:relative;overflow:auto;flex:1 1 auto;min-height:0}
     .x{
       border:1px solid rgba(255,255,255,.18);
       background:rgba(255,255,255,.06);
@@ -668,16 +671,13 @@
       }
 
       const stats = [
-        ["📚 Livros", `${st.booksTotal ?? 0}`],
-        ["✅ Finalizados", `${st.booksFinished ?? 0}`],
-        ["📖 Em progresso", `${st.booksInProgress ?? 0}`],
-        ["🧩 Tópicos", `${st.topicsDone ?? 0}/${st.topicsTotal ?? 0}`],
-        ["🔥 Streak", `${st.streakCurrent ?? 0}d (best ${st.streakBest ?? 0})`],
-        ["⏱️ Tempo total", minutesToH(st.totalMinutes ?? 0)],
-      ];
-      if(st.bestSessionMinutes != null){
-        stats.push(["🏹 Maior sessão", minutesToH(st.bestSessionMinutes)]);
-      }
+  ["📚 Livros", `${st.booksTotal ?? 0}`],
+  ["✅ Finalizados", `${st.booksFinished ?? 0}`],
+  ["📖 Em progresso", `${st.booksInProgress ?? 0}`],
+  ["🔥 Streak", `${st.streakCurrent ?? 0}d (best ${st.streakBest ?? 0})`],
+  ["🏹 Maior sessão", (st.bestSessionMinutes!=null ? minutesToH(st.bestSessionMinutes) : "—")],
+  ["⏱️ Tempo total", minutesToH(st.totalMinutes ?? 0)],
+];
       $("#statGrid").innerHTML = stats.map(([k,v])=>`
         <div class="stat"><div class="k">${escapeHtml(k)}</div><div class="v">${escapeHtml(v)}</div></div>
       `).join("");
@@ -694,14 +694,12 @@
           const denom = correct + wrong;
           const accRaw = (qs.accuracy===0 || qs.accuracy) ? Number(qs.accuracy) : (denom ? (correct/denom) : 0);
           const accPct = denom ? Math.round(Math.max(0, Math.min(1, accRaw)) * 100) : null;
-          const timeMin = (qs.timeMinTotal===0 || qs.timeMinTotal) ? Number(qs.timeMinTotal) : null;
 
           const cards = [
             ["📦 Banco de questões", fmtInt(totalQ)],
             ["✅ Resolvidas", fmtInt(attempted)],
             ["🎯 Acerto", (accPct==null ? "—" : `${accPct}%`)]
           ];
-          if(timeMin!=null && timeMin>0) cards.push(["⏱️ Questões", minutesToH(timeMin)]);
 
           qGrid.style.display = "";
           qGrid.innerHTML = cards.map(([k,v])=>`
