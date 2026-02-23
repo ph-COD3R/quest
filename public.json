@@ -2,7 +2,7 @@
   "meta": {
     "app": "LeituraQuest",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T00:04:30.160Z"
+    "exportedAt": "2026-02-23T00:06:04.220Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -154,7 +154,7 @@
       "review": null,
       "bookStats": {
         "readingMinTotal": 466,
-        "lastActivityAt": "2026-02-23T00:01:35.971Z",
+        "lastActivityAt": "2026-02-23T00:05:44.641Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -297,12 +297,22 @@
   "questionStats": {
     "total": 6,
     "attempted": 6,
-    "correct": 18,
+    "correct": 19,
     "wrong": 3,
-    "accuracy": 0.8571428571428571,
+    "accuracy": 0.8636363636363636,
     "timeMinTotal": 3
   },
   "recentQuestions": [
+    {
+      "at": "2026-02-23T00:05:44.641Z",
+      "subject": "Eletricidade",
+      "topic": "Circuito Paralelo CC",
+      "difficulty": "Normal",
+      "result": "ok",
+      "durationSec": 10,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Qual é a fórmula correta para a resistência equivalente RT de dois resistores R1 e R2 em …"
+    },
     {
       "at": "2026-02-23T00:01:35.971Z",
       "subject": "Eletricidade",
@@ -317,7 +327,7 @@
   "questionThemes30d": [
     {
       "topic": "Circuito Paralelo CC",
-      "count": 1,
+      "count": 2,
       "accuracy": 1
     }
   ]
