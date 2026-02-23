@@ -232,6 +232,23 @@
     .badge.bad{border-color:rgba(255,107,107,.35);background:rgba(255,107,107,.10)}
 
     .achList{display:grid;gap:10px;margin-top:10px}
+
+    /* ===== Atividade recente (Leitura x Questões) ===== */
+    .splitGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative}
+    .splitGrid:before{content:"";position:absolute;left:50%;top:10px;bottom:10px;width:1px;background:rgba(255,255,255,.08)}
+    .splitPane{border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.10);border-radius:16px;padding:12px}
+    .scrollBox{max-height:420px;overflow:auto;padding-right:6px}
+    .scrollBox::-webkit-scrollbar{width:8px}
+    .scrollBox::-webkit-scrollbar-thumb{background:rgba(255,255,255,.10);border-radius:999px}
+    .themesRow{display:flex;gap:8px;flex-wrap:wrap}
+    .themesRow .tag{font-size:11px}
+    .qSnippet{margin-top:8px;font-size:12px;color:rgba(233,237,247,.70);white-space:pre-wrap}
+    @media (max-width: 900px){
+      .splitGrid{grid-template-columns:1fr}
+      .splitGrid:before{display:none}
+      .scrollBox{max-height:360px}
+    }
+
     .ach{
       border:1px solid rgba(255,255,255,.10);
       background:rgba(0,0,0,.16);
@@ -444,10 +461,41 @@
       <div id="bookGrid" class="bookGrid"></div>
     </section>
 
-    <section class="card" id="sessionsCard" style="margin-top:14px; display:none;">
-      <h2 class="h2">⏱️ Sessões recentes</h2>
-      <p class="sub">As últimas sessões (até 40) exportadas pelo QUEST.</p>
-      <div id="sessionList" class="achList"></div>
+    <section class="card" id="activityCard" style="margin-top:14px; display:none;">
+      <div class="sectionTitle">
+        <div class="left">
+          <h2 class="h2" style="margin:0">🧭 Atividade recente</h2>
+        </div>
+        <div class="filters">
+          <span class="chip" id="actHint">Somente leitura</span>
+        </div>
+      </div>
+      <p class="sub">Leitura (sessões) à esquerda • Questões resolvidas à direita. Listas com scroll interno (até 20 + 20).</p>
+
+      <div class="splitGrid">
+        <div class="splitPane">
+          <div class="row">
+            <b>📚 Leitura</b>
+            <span class="muted" id="readingCount">—</span>
+          </div>
+          <div class="scrollBox" style="margin-top:10px;">
+            <div id="readingList" class="achList"></div>
+          </div>
+        </div>
+
+        <div class="splitPane">
+          <div class="row">
+            <b>🧩 Questões recentes</b>
+            <div class="row2" style="gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+              <span class="chip" id="qTextToggle" style="cursor:pointer; user-select:none;">🙈 Ocultar texto</span>
+            </div>
+          </div>
+          <div class="themesRow" id="qThemesRow" style="margin-top:8px; display:none;"></div>
+          <div class="scrollBox" style="margin-top:10px;">
+            <div id="qRecentList" class="achList"></div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <p class="muted" style="text-align:center; margin:16px 0 6px; font-size:12px;">
@@ -674,7 +722,7 @@
   ["📚 Livros", `${st.booksTotal ?? 0}`],
   ["✅ Finalizados", `${st.booksFinished ?? 0}`],
   ["📖 Em progresso", `${st.booksInProgress ?? 0}`],
-  ["🔥 Streak", `${st.streakCurrent ?? 0}d (melhor ${st.streakBest ?? 0})`],
+  ["🔥 Streak", `${st.streakCurrent ?? 0}d (best ${st.streakBest ?? 0})`],
   ["🏹 Maior sessão", (st.bestSessionMinutes!=null ? minutesToH(st.bestSessionMinutes) : "—")],
   ["⏱️ Tempo total", minutesToH(st.totalMinutes ?? 0)],
 ];
@@ -921,31 +969,136 @@
     }
 
     function renderSessions(){
-      const list = DATA.sessions || [];
-      const card = $("#sessionsCard");
-      if(!list || list.length===0){
+      const card = $("#activityCard");
+      if(!card) return;
+
+      const reading = Array.isArray(DATA.sessions) ? DATA.sessions.slice(0,20) : [];
+      const recentQ = Array.isArray(DATA.recentQuestions) ? DATA.recentQuestions.slice(0,20) : [];
+      const themes = Array.isArray(DATA.questionThemes30d) ? DATA.questionThemes30d.slice(0,5) : [];
+
+      if(reading.length===0 && recentQ.length===0){
         card.style.display = "none";
         return;
       }
       card.style.display = "block";
 
+      const hint = $("#actHint");
+      if(hint){
+        hint.textContent = (reading.length>0 && recentQ.length>0) ? "Leitura + Questões" : (reading.length>0 ? "Somente leitura" : "Somente questões");
+      }
+
+      // ---- Toggle snippet visibility (persist) ----
+      window.__hideQText = (typeof window.__hideQText==="boolean") ? window.__hideQText : true;
+      try{
+        const raw = localStorage.getItem("quest_hide_q_text");
+        if(raw==="0") window.__hideQText = false;
+        if(raw==="1") window.__hideQText = true;
+      }catch(_){}
+
+      const tbtn = $("#qTextToggle");
+      if(tbtn){
+        tbtn.textContent = window.__hideQText ? "👁️ Mostrar texto" : "🙈 Ocultar texto";
+        if(!tbtn.__bound){
+          tbtn.__bound = true;
+          tbtn.onclick = ()=>{
+            window.__hideQText = !window.__hideQText;
+            try{ localStorage.setItem("quest_hide_q_text", window.__hideQText ? "1":"0"); }catch(_){}
+            renderSessions();
+          };
+        }
+      }
+
+      // ---- Left: reading sessions ----
       const booksById = new Map((DATA.books||[]).map(b=>[b.id,b]));
-      $("#sessionList").innerHTML = list.map(s=>{
-        const b = booksById.get(s.bookId);
-        const name = b ? b.title : (s.bookId ? "Livro removido" : "Sem livro");
-        const d = s.end ? (new Date(s.end).toLocaleDateString("pt-BR")) : "";
-        return `
-          <div class="ach">
-            <b>⏱️ ${escapeHtml(minutesToH(s.minutes))} • ${escapeHtml(name)}</b>
-            <div class="d">${escapeHtml((s.note||"").trim() ? s.note : "—")}</div>
-            <div class="meta">
-              <span class="tag">📅 ${escapeHtml(d || "—")}</span>
-              <span class="chip">🧭 ${escapeHtml(s.bookId ? "Vinculada" : "Livre")}</span>
-            </div>
-          </div>
-        `;
-      }).join("");
+      const rCount = $("#readingCount");
+      if(rCount) rCount.textContent = reading.length ? `${reading.length} registro(s)` : "—";
+      const rList = $("#readingList");
+      if(rList){
+        if(reading.length===0){
+          rList.innerHTML = `<div class="empty">Nenhuma sessão de leitura exportada ainda.</div>`;
+        }else{
+          rList.innerHTML = reading.map(s=>{
+            const b = booksById.get(s.bookId);
+            const name = b ? b.title : (s.bookId ? "Livro removido" : "Sem livro");
+            const d = s.end ? (new Date(s.end).toLocaleDateString("pt-BR")) : "";
+            const note = (s.note||"").trim();
+            return `
+              <div class="ach">
+                <b>⏱️ ${escapeHtml(minutesToH(s.minutes))} • ${escapeHtml(name)}</b>
+                <div class="d">${escapeHtml(note ? note : "—")}</div>
+                <div class="meta">
+                  <span class="tag">📅 ${escapeHtml(d || "—")}</span>
+                  <span class="chip">🧭 ${escapeHtml(s.bookId ? "Vinculada" : "Livre")}</span>
+                </div>
+              </div>
+            `;
+          }).join("");
+        }
+      }
+
+      // ---- Right: recent question attempts ----
+      const qThemesRow = $("#qThemesRow");
+      if(qThemesRow){
+        if(themes.length===0){
+          qThemesRow.style.display = "none";
+          qThemesRow.innerHTML = "";
+        }else{
+          qThemesRow.style.display = "";
+          qThemesRow.innerHTML = themes.map(t=>{
+            const acc = (t.accuracy===0 || t.accuracy) ? Math.round(Math.max(0, Math.min(1, Number(t.accuracy))) * 100) : null;
+            const label = `${txt(t.topic || "(sem tópico)")} • ${Number(t.count||0)}${acc!=null ? ` • ${acc}%` : ""}`;
+            return `<span class="tag">${escapeHtml(label)}</span>`;
+          }).join("");
+        }
+      }
+
+      const qList = $("#qRecentList");
+      if(qList){
+        const fmtDurShortFromSec = (sec)=>{
+          if(sec===null || sec===undefined || !Number.isFinite(Number(sec))) return "—";
+          sec = Math.max(0, Math.floor(Number(sec)));
+          const hh = Math.floor(sec/3600);
+          const mm = Math.floor((sec%3600)/60);
+          const ss = sec%60;
+          if(hh>0) return `${hh}:${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
+          return `${String(mm).padStart(2,"0")}:${String(ss).padStart(2,"0")}`;
+        };
+
+        if(recentQ.length===0){
+          qList.innerHTML = `<div class="empty">Nenhuma questão resolvida exportada ainda.</div>`;
+        }else{
+          qList.innerHTML = recentQ.map(r=>{
+            const ok = String(r.result||"") === "ok";
+            const icon = ok ? "✅" : "❌";
+            const subj = (r.subject||"").trim() || "Questões";
+            const topic = (r.topic||"").trim() || "(sem tópico)";
+            const diff = (r.difficulty||"").trim();
+            const book = (r.bookTitle||"").trim();
+            const d = r.at ? (new Date(r.at).toLocaleDateString("pt-BR")) : "—";
+            const dur = fmtDurShortFromSec(r.durationSec);
+            const snippetRaw = (r.promptSnippet||"").trim();
+            const snippet = snippetRaw ? (snippetRaw.length>90 ? (snippetRaw.slice(0,90)+"…") : snippetRaw) : "";
+
+            const meta = [
+              `<span class="tag">⏱️ ${escapeHtml(dur)}</span>`,
+              `<span class="tag">📅 ${escapeHtml(d)}</span>`,
+              diff ? `<span class="tag">⚔️ ${escapeHtml(diff)}</span>` : "",
+              book ? `<span class="chip">📘 ${escapeHtml(book)}</span>` : ""
+            ].filter(Boolean).join("");
+
+            return `
+              <div class="ach">
+                <b>${icon} ${escapeHtml(subj)} • ${escapeHtml(topic)}</b>
+                <div class="d">${ok ? "Acertou" : "Errou"}</div>
+                <div class="meta">${meta}</div>
+                ${(!window.__hideQText && snippet) ? `<div class="qSnippet">${escapeHtml(snippet)}</div>` : ``}
+              </div>
+            `;
+          }).join("");
+        }
+      }
     }
+
 
     function openBookModal(book){
       $("#modalTitle").textContent = txt(book.title || "Livro");
