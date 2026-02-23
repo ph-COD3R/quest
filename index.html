@@ -798,6 +798,14 @@
         repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 22px),
         repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 18px)
       `;
+      const scratches = `
+        repeating-linear-gradient(120deg, rgba(255,255,255,.05) 0 1px, transparent 1px 16px),
+        repeating-linear-gradient(60deg, rgba(0,0,0,.20) 0 1px, transparent 1px 22px)
+      `;
+      const paper = `
+        radial-gradient(120px 90px at 30% 30%, rgba(255,255,255,.10), transparent 62%),
+        radial-gradient(160px 120px at 75% 60%, rgba(0,0,0,.22), transparent 66%)
+      `;
       const stripes = `repeating-linear-gradient(135deg, rgba(255,255,255,.10) 0 10px, rgba(255,255,255,0) 10px 22px)`;
       const dust = `radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.22), transparent 60%),
                     radial-gradient(2px 2px at 60% 20%, rgba(255,255,255,.18), transparent 60%),
@@ -879,6 +887,113 @@
               ${vignette},
               ${baseDark};
           `;
+
+        // ===== Presets novos (RPG dark) =====
+        case "rpg_runestone":
+          return `
+            background-image:
+              radial-gradient(220px 120px at 50% 40%, rgba(255,255,255,.10), transparent 65%),
+              ${runes},
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_crypt":
+          return `
+            background-image:
+              radial-gradient(180px 90px at 50% 45%, rgba(255,255,255,.08), transparent 65%),
+              repeating-linear-gradient(0deg, rgba(255,255,255,.06) 0 2px, transparent 2px 14px),
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_emberforge":
+          return `
+            background-image:
+              radial-gradient(120px 80px at 20% 75%, rgba(255,140,80,.18), transparent 70%),
+              radial-gradient(140px 90px at 40% 80%, rgba(255,80,80,.10), transparent 72%),
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_bloodveil":
+          return `
+            background-image:
+              radial-gradient(220px 120px at 30% 40%, rgba(160,40,60,.18), transparent 65%),
+              radial-gradient(220px 140px at 70% 60%, rgba(120,20,30,.14), transparent 70%),
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_parchment":
+          return `
+            background-image:
+              ${paper},
+              repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 1px, transparent 1px 26px),
+              radial-gradient(160px 120px at 20% 70%, ${A}, transparent 70%),
+              radial-gradient(160px 120px at 80% 30%, ${B}, transparent 72%),
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_shadow":
+          return `
+            background-image:
+              radial-gradient(180px 110px at 50% 45%, rgba(255,255,255,.08), transparent 70%),
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_titanblade":
+          return `
+            background-image:
+              radial-gradient(190px 120px at 50% 45%, rgba(255,255,255,.08), transparent 70%),
+              ${scratches},
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_floatingtome":
+          return `
+            background-image:
+              radial-gradient(200px 120px at 50% 45%, rgba(255,255,255,.10), transparent 70%),
+              radial-gradient(120px 90px at 30% 65%, rgba(255,255,255,.08), transparent 70%),
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_thunder":
+          return `
+            background-image:
+              repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 2px, transparent 2px 18px),
+              ${glow},
+              ${vignette},
+              ${baseDark};
+          `;
+        case "rpg_circuitrune":
+          return `
+            background-image:
+              repeating-linear-gradient(90deg, rgba(255,255,255,.07) 0 1px, transparent 1px 20px),
+              repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 16px),
+              radial-gradient(200px 120px at 35% 55%, ${A}, transparent 70%),
+              radial-gradient(200px 120px at 70% 40%, ${B}, transparent 72%),
+              ${vignette},
+              ${baseDark};
+          `;
+
+        // ===== Alias / compat =====
+        case "stripes":
+          return `
+            background-image:
+              repeating-linear-gradient(45deg, rgba(255,255,255,.10) 0 10px, rgba(255,255,255,0) 10px 22px),
+              radial-gradient(120px 80px at 20% 15%, rgba(255,255,255,.18), transparent 60%),
+              linear-gradient(135deg, ${A}, ${B});
+          `;
+
         case "aurora":
         default:
           return `
