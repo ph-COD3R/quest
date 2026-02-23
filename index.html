@@ -467,8 +467,9 @@
           <h2 class="h2" style="margin:0">🧭 Atividade recente</h2>
         </div>
       </div>
-    // <p class="sub">Leitura (sessões) à esquerda • Questões resolvidas à direita. Listas com scroll interno (até 20 + 20).</p> 
-
+      <!--
+      <p class="sub">Leitura (sessões) à esquerda • Questões resolvidas à direita. Listas com scroll interno (até 20 + 20).</p>
+      -->
       <div class="splitGrid">
         <div class="splitPane">
           <div class="row">
@@ -491,10 +492,11 @@
         </div>
       </div>
     </section>
-
-  //  <p class="muted" style="text-align:center; margin:16px 0 6px; font-size:12px;">
-     
-//    </p>
+    <!--
+    <p class="muted" style="text-align:center; margin:16px 0 6px; font-size:12px;">
+      Feitosa_exe
+    </p>
+    -->
   </div>
 
   <div class="backdrop" id="backdrop">
@@ -716,7 +718,7 @@
   ["📚 Livros", `${st.booksTotal ?? 0}`],
   ["✅ Finalizados", `${st.booksFinished ?? 0}`],
   ["📖 Em progresso", `${st.booksInProgress ?? 0}`],
-  ["🔥 Sequência", `${st.streakCurrent ?? 0}d (melhor sequência: ${st.streakBest ?? 0})`],
+  ["🔥 Sequência", `${st.streakCurrent ?? 0}d (maior ${st.streakBest ?? 0})`],
   ["🏹 Maior sessão", (st.bestSessionMinutes!=null ? minutesToH(st.bestSessionMinutes) : "—")],
   ["⏱️ Tempo total", minutesToH(st.totalMinutes ?? 0)],
 ];
