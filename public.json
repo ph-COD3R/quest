@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-02-23T22:26:34.980Z"
+    "exportedAt": "2026-02-25T02:19:29.485Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -24,8 +24,8 @@
     },
     "byMedals": {
       "rank": "Caçador",
-      "medals": 14,
-      "progress": 0.26666666666666666,
+      "medals": 17,
+      "progress": 0.4666666666666667,
       "nextLabel": "25 medalhas"
     }
   },
@@ -33,18 +33,25 @@
     "booksTotal": 1,
     "booksFinished": 0,
     "booksInProgress": 1,
-    "topicsDone": 38,
+    "topicsDone": 39,
     "topicsTotal": 42,
-    "overallProgressPercent": 90,
-    "streakCurrent": 2,
-    "streakBest": 2,
-    "totalMinutes": 551,
+    "overallProgressPercent": 93,
+    "streakCurrent": 3,
+    "streakBest": 3,
+    "totalMinutes": 572,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 4,
     "bestQuestionsPracticeSessionMinutes": 1
   },
   "achievements": {
     "autoUnlocked": [
+      {
+        "id": "streak_3",
+        "name": "🔥 Streak: 3 dias",
+        "desc": "Estude por 3 dias seguidos (qualquer atividade).",
+        "medals": 3,
+        "unlockedAt": "2026-02-25T02:17:33.709Z"
+      },
       {
         "id": "session_180",
         "name": "⏱️ Sessão: 3h seguida",
@@ -77,6 +84,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": null,
+      "minutes": 21,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 85,
@@ -150,8 +164,8 @@
         "emblemColor": "rgba(255, 255, 224, 1.0)"
       },
       "progress": {
-        "percent": 90,
-        "topicsDone": 38,
+        "percent": 93,
+        "topicsDone": 39,
         "topicsTotal": 42,
         "chaptersDone": 6,
         "chaptersTotal": 19
@@ -204,7 +218,7 @@
           },
           {
             "title": "LEIS DE KIRCHHOFF",
-            "doneTopics": 0,
+            "doneTopics": 1,
             "totalTopics": 4,
             "completed": false
           },
@@ -286,9 +300,9 @@
   ],
   "xpProgress": {
     "level": 5,
-    "within": 0.10000000000002274,
+    "within": 10.100000000000023,
     "nextNeed": 200,
-    "xp": 550.1
+    "xp": 560.1
   },
   "questionSessions": [
     {
@@ -317,7 +331,7 @@
     }
   ],
   "questionStats": {
-    "total": 42,
+    "total": 58,
     "attempted": 11,
     "correct": 24,
     "wrong": 6,
