@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-02-25T02:19:29.485Z"
+    "exportedAt": "2026-02-25T02:33:33.045Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -34,8 +34,8 @@
     "booksFinished": 0,
     "booksInProgress": 1,
     "topicsDone": 39,
-    "topicsTotal": 42,
-    "overallProgressPercent": 93,
+    "topicsTotal": 71,
+    "overallProgressPercent": 55,
     "streakCurrent": 3,
     "streakBest": 3,
     "totalMinutes": 572,
@@ -164,9 +164,9 @@
         "emblemColor": "rgba(255, 255, 224, 1.0)"
       },
       "progress": {
-        "percent": 93,
+        "percent": 55,
         "topicsDone": 39,
-        "topicsTotal": 42,
+        "topicsTotal": 71,
         "chaptersDone": 6,
         "chaptersTotal": 19
       },
@@ -225,19 +225,19 @@
           {
             "title": "CÁLCULO DE REDES",
             "doneTopics": 0,
-            "totalTopics": 0,
+            "totalTopics": 9,
             "completed": false
           },
           {
             "title": "MAGNETISMO ELÉTROMAGNETISMO",
             "doneTopics": 0,
-            "totalTopics": 0,
+            "totalTopics": 8,
             "completed": false
           },
           {
             "title": "GERADORES E MOTORES DE CORRENTE CONTÍNUA",
             "doneTopics": 0,
-            "totalTopics": 0,
+            "totalTopics": 12,
             "completed": false
           },
           {
