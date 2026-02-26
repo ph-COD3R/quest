@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-02-25T02:33:33.045Z"
+    "exportedAt": "2026-02-26T00:45:47.209Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -36,8 +36,8 @@
     "topicsDone": 39,
     "topicsTotal": 71,
     "overallProgressPercent": 55,
-    "streakCurrent": 3,
-    "streakBest": 3,
+    "streakCurrent": 4,
+    "streakBest": 4,
     "totalMinutes": 572,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 4,
@@ -177,8 +177,8 @@
       "review": null,
       "bookStats": {
         "readingMinTotal": 551,
-        "questionsMinTotal": 2,
-        "lastActivityAt": "2026-02-23T16:39:13.614Z",
+        "questionsMinTotal": 3,
+        "lastActivityAt": "2026-02-26T00:44:32.853Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -300,9 +300,9 @@
   ],
   "xpProgress": {
     "level": 5,
-    "within": 10.100000000000023,
+    "within": 10.700000000000045,
     "nextNeed": 200,
-    "xp": 560.1
+    "xp": 560.7
   },
   "questionSessions": [
     {
@@ -332,13 +332,73 @@
   ],
   "questionStats": {
     "total": 58,
-    "attempted": 11,
-    "correct": 24,
-    "wrong": 6,
-    "accuracy": 0.8,
+    "attempted": 13,
+    "correct": 26,
+    "wrong": 10,
+    "accuracy": 0.7222222222222222,
     "timeMinTotal": 4
   },
   "recentQuestions": [
+    {
+      "at": "2026-02-26T00:44:32.853Z",
+      "subject": "Eletricidade",
+      "topic": "Série-paralelo",
+      "difficulty": "Normal",
+      "result": "wrong",
+      "durationSec": 3,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Como usar pilhas para dobrar corrente ou para dobrar a tensão?"
+    },
+    {
+      "at": "2026-02-26T00:44:22.347Z",
+      "subject": "Eletricidade",
+      "topic": "Série-paralelo",
+      "difficulty": "Normal",
+      "result": "wrong",
+      "durationSec": 3,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Como usar pilhas para dobrar corrente ou para dobrar a tensão?"
+    },
+    {
+      "at": "2026-02-26T00:43:58.706Z",
+      "subject": "Eletricidade",
+      "topic": "Associação de pilhas",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 5,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Em pilhas idênticas em paralelo, o que muda (V e corrente)?"
+    },
+    {
+      "at": "2026-02-26T00:43:34.031Z",
+      "subject": "Eletricidade",
+      "topic": "Capacidade",
+      "difficulty": "Fácil",
+      "result": "ok",
+      "durationSec": 9,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Capacidade em ampères-hora (Ah): como relacionar com tempo e corrente?"
+    },
+    {
+      "at": "2026-02-26T00:42:11.131Z",
+      "subject": "Eletricidade",
+      "topic": "Associação de pilhas",
+      "difficulty": "Fácil",
+      "result": "wrong",
+      "durationSec": null,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Como calcular a tensão total de n pilhas idênticas em <b>série</b>?"
+    },
+    {
+      "at": "2026-02-26T00:42:00.106Z",
+      "subject": "Eletricidade",
+      "topic": "Circuito Paralelo CC",
+      "difficulty": "Normal",
+      "result": "wrong",
+      "durationSec": null,
+      "bookTitle": "Eletricidade Básica",
+      "promptSnippet": "Divisor de corrente (2 ramos): IT = 12 A, R1 = 3 Ω e R2 = 9 Ω em paralelo. Qual é a corre…"
+    },
     {
       "at": "2026-02-23T16:39:13.614Z",
       "subject": "Eletricidade",
@@ -443,8 +503,18 @@
   "questionThemes30d": [
     {
       "topic": "Associação de pilhas",
-      "count": 2,
+      "count": 4,
       "accuracy": 0.5
+    },
+    {
+      "topic": "Série-paralelo",
+      "count": 3,
+      "accuracy": 0.3333333333333333
+    },
+    {
+      "topic": "Circuito Paralelo CC",
+      "count": 3,
+      "accuracy": 0.6666666666666666
     },
     {
       "topic": "Recarga",
@@ -452,19 +522,9 @@
       "accuracy": 1
     },
     {
-      "topic": "Circuito Paralelo CC",
-      "count": 2,
-      "accuracy": 1
-    },
-    {
-      "topic": "Baterias",
+      "topic": "Capacidade",
       "count": 1,
       "accuracy": 1
-    },
-    {
-      "topic": "Resistência interna",
-      "count": 1,
-      "accuracy": 0
     }
   ]
 }
