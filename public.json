@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-02-27T02:51:47.999Z"
+    "exportedAt": "2026-02-27T05:06:59.654Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -23,28 +23,35 @@
       "nextLabel": "1 livro"
     },
     "byMedals": {
-      "rank": "Caçador",
-      "medals": 22,
-      "progress": 0.8,
-      "nextLabel": "25 medalhas"
+      "rank": "Veterano",
+      "medals": 25,
+      "progress": 0,
+      "nextLabel": "50 medalhas"
     }
   },
   "stats": {
     "booksTotal": 1,
     "booksFinished": 0,
     "booksInProgress": 1,
-    "topicsDone": 39,
+    "topicsDone": 51,
     "topicsTotal": 71,
-    "overallProgressPercent": 55,
-    "streakCurrent": 5,
-    "streakBest": 5,
-    "totalMinutes": 635,
+    "overallProgressPercent": 72,
+    "streakCurrent": 6,
+    "streakBest": 6,
+    "totalMinutes": 764,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 4,
     "bestQuestionsPracticeSessionMinutes": 1
   },
   "achievements": {
     "autoUnlocked": [
+      {
+        "id": "topics_50",
+        "name": "✅ Tópicos: 50",
+        "desc": "Conclua 50 tópico(s).",
+        "medals": 3,
+        "unlockedAt": "2026-02-27T04:39:56.437Z"
+      },
       {
         "id": "time_600",
         "name": "🧠 10h total",
@@ -91,6 +98,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 129,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 63,
@@ -178,10 +192,10 @@
         "emblemColor": "rgba(255, 255, 224, 1.0)"
       },
       "progress": {
-        "percent": 55,
-        "topicsDone": 39,
+        "percent": 72,
+        "topicsDone": 51,
         "topicsTotal": 71,
-        "chaptersDone": 6,
+        "chaptersDone": 8,
         "chaptersTotal": 19
       },
       "finished": false,
@@ -190,9 +204,9 @@
       "tags": [],
       "review": null,
       "bookStats": {
-        "readingMinTotal": 614,
+        "readingMinTotal": 743,
         "questionsMinTotal": 3,
-        "lastActivityAt": "2026-02-27T02:51:42.850Z",
+        "lastActivityAt": "2026-02-27T05:06:51.995Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
@@ -232,15 +246,15 @@
           },
           {
             "title": "LEIS DE KIRCHHOFF",
-            "doneTopics": 1,
+            "doneTopics": 4,
             "totalTopics": 4,
-            "completed": false
+            "completed": true
           },
           {
             "title": "CÁLCULO DE REDES",
-            "doneTopics": 0,
+            "doneTopics": 9,
             "totalTopics": 9,
-            "completed": false
+            "completed": true
           },
           {
             "title": "MAGNETISMO ELÉTROMAGNETISMO",
@@ -314,9 +328,9 @@
   ],
   "xpProgress": {
     "level": 5,
-    "within": 10.700000000000045,
+    "within": 180.70000000000005,
     "nextNeed": 200,
-    "xp": 560.7
+    "xp": 730.7
   },
   "questionSessions": [
     {
