@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-02-27T05:06:59.654Z"
+    "exportedAt": "2026-02-28T00:11:32.090Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -38,7 +38,7 @@
     "overallProgressPercent": 72,
     "streakCurrent": 6,
     "streakBest": 6,
-    "totalMinutes": 764,
+    "totalMinutes": 779,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 4,
     "bestQuestionsPracticeSessionMinutes": 1
@@ -98,6 +98,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": "5cc7c3afffc7b-19c416c3899",
+      "minutes": 15,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": "5cc7c3afffc7b-19c416c3899",
       "minutes": 129,
@@ -204,9 +211,9 @@
       "tags": [],
       "review": null,
       "bookStats": {
-        "readingMinTotal": 743,
+        "readingMinTotal": 758,
         "questionsMinTotal": 3,
-        "lastActivityAt": "2026-02-27T05:06:51.995Z",
+        "lastActivityAt": "2026-02-28T00:11:29.023Z",
         "chapters": [
           {
             "title": "A NATUREZA DA ELETRICIDADE",
