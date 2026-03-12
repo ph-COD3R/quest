@@ -2,7 +2,7 @@
   "meta": {
     "app": "QUEST",
     "schema": "public.v1",
-    "exportedAt": "2026-03-11T06:13:02.673Z"
+    "exportedAt": "2026-03-12T05:31:32.841Z"
   },
   "profile": {
     "name": "Feitosa_exe",
@@ -36,9 +36,9 @@
     "topicsDone": 51,
     "topicsTotal": 71,
     "overallProgressPercent": 72,
-    "streakCurrent": 1,
+    "streakCurrent": 2,
     "streakBest": 6,
-    "totalMinutes": 913,
+    "totalMinutes": 963,
     "bestSessionMinutes": 203,
     "questionsPracticeMinutes": 4,
     "bestQuestionsPracticeSessionMinutes": 1
@@ -98,6 +98,13 @@
     "manual": []
   },
   "sessions": [
+    {
+      "bookId": null,
+      "minutes": 50,
+      "note": null,
+      "start": null,
+      "end": null
+    },
     {
       "bookId": null,
       "minutes": 70,
